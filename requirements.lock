@@ -81,7 +81,7 @@ httpx==0.28.1
     # via
     #   huggingface-hub
     #   jupyterlab
-huggingface-hub==1.29.0
+huggingface-hub==0.36.2
     # via
     #   tokenizers
     #   transformers
@@ -381,6 +381,8 @@ seaborn==0.13.2
     # via -r requirements.txt
 send2trash==2.1.0
     # via jupyter-server
+sentencepiece==0.2.2
+    # via -r requirements.txt
 setuptools==81.0.0
     # via torch
 shellingham==1.5.4
@@ -411,7 +413,7 @@ threadpoolctl==3.6.0
     #   scikit-learn
 tinycss2==1.5.1
     # via bleach
-tokenizers==0.23.1
+tokenizers==0.20.3
     # via transformers
 torch==2.11.0
     # via -r requirements.txt
@@ -446,7 +448,7 @@ traitlets==5.16.1
     #   nbclient
     #   nbconvert
     #   nbformat
-transformers==5.16.1
+transformers==4.46.3
     # via -r requirements.txt
 typer==0.27.1
     # via transformers

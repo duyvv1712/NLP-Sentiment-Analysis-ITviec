@@ -196,13 +196,13 @@ git push origin feature/<ten-nhanh-cua-ban>
 
 ## 7. Bảng Theo dõi Tiến độ Hiện tại (Current Project Status)
 
-*Cập nhật lần cuối: 28/08/2026*
+*Cập nhật lần cuối: 01/09/2026*
 
 | Hạng mục công việc | Phụ trách chính | Trạng thái | Chi tiết kết quả bàn giao |
 | :--- | :--- | :---: | :--- |
 | **1. Thiết lập dự án & Bộ từ điển** | **TV1: Hoàng Hôn** | ✅ **100% (Hoàn thành)** | Cấu trúc Repo, `requirements.txt`, bộ từ điển đầy đủ trong `data/dictionaries/` (*teencode, emojicon, positive/negative words & emoji, stopwords*). |
 | **2. Pipeline Tiền xử lý & Gán nhãn** | **TV1: Hoàng Hôn** | ✅ **100% (Hoàn thành)** | Hoàn thiện module `src/preprocessing.py`, notebook `02_text_preprocessing.ipynb`. Xuất thành công `data/processed/reviews_cleaned.xlsx` (8,417 mẫu, 23 cột, gán nhãn 3 lớp: *6,208 Positive, 1,639 Neutral, 570 Negative*). |
 | **3. Phân tích EDA & Đặc trưng TF-IDF** | **TV2: Văn Duy** | ✅ **100% (Hoàn thành & Bàn giao)** | Hoàn thiện `01_data_exploration_eda.ipynb`, `src/features.py`, xuất 9 biểu đồ 300 DPI tại `reports/figures/`, chia tập Stratified 80/20 (khóa Final Test chống rò rỉ dữ liệu), đóng gói artifacts (`train_test_features.joblib`, `text_tfidf_vectorizer.joblib`, `artifact_manifest.json`) và tài liệu `reports/eda_feature_engineering.md` + `reports/overview_for_team.md`. |
-| **4. Huấn luyện Mô hình Machine Learning** | **TV3: Duy Khang** | 🔄 **Đang triển khai** | Sử dụng trực tiếp bộ artifacts từ TV2 trong `03_sentiment_modeling_ml.ipynb`, chọn và tinh chỉnh siêu tham số 4 thuật toán ML (Naive Bayes, SVM, Logistic Regression, Random Forest) & Stacking Ensemble bằng 5-Fold CV trên tập Development; chỉ đánh giá Final Test sau khi khóa mô hình. |
+| **4. Huấn luyện Mô hình Machine Learning** | **TV3: Duy Khang** | ✅ **100% (Hoàn thành phần ML)** | Hoàn thiện `src/models.py` (`tune_hyperparameters`, `get_stacking_model`, `plot_model_comparison`) và `03_sentiment_modeling_ml.ipynb`: huấn luyện + tinh chỉnh siêu tham số (GridSearchCV, 5-Fold CV) cho 4 thuật toán ML (Naive Bayes, Logistic Regression, Linear SVM, Random Forest) và Stacking Ensemble (NB+LR+SVM); chỉ đánh giá Final Test đúng 1 lần sau khi khóa mô hình bằng CV trên train (Stacking thắng với CV Macro F1 0,5619; Final-test Macro F1 0,5475). Lưu `models/best_sentiment_model.joblib`, biểu đồ so sánh & confusion matrix tại `reports/figures/`, chi tiết tại `reports/modeling_hyperparameter_tuning.md`. **ViSoBERT** (`04_sentiment_modeling_deeplearning.ipynb`) đã chạy benchmark zero-shot thật trên GPU (Runpod): Accuracy 0,6536, Macro F1 0,4036 — thấp hơn Stacking nhưng Recall lớp Negative cao hơn hẳn (75,44% so với 26,32%), gần như không nhận ra lớp Neutral (Recall 4,88%). |
 | **5. Đánh giá, Insight & Web Demo** | **TV4: Thành Trung** | ⏳ **Sẵn sàng triển khai** | Chuẩn bị chạy `05_company_sentiment_insights.ipynb` (WordCloud công ty, Confusion Matrix, Error Analysis) và xây dựng Web Demo tương tác thời gian thực (Streamlit/Gradio). |
 | **6. Báo cáo tổng hợp & Slide thuyết trình** | **TV1 & Cả nhóm** | ⏳ **Giai đoạn tiếp theo** | Soạn thảo theo mẫu đề cương `reports/final_report_outline.md`. |

@@ -21,3 +21,5 @@ env/
 # models/*.bin
 # models/*.pt
 # models/*.safetensors
+
+.ua/
