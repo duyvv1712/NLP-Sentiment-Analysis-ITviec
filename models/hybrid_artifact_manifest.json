@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "git_sha": "a437498e55ff51e0e74a8283b31acd6e60dc06e7",
+  "git_branch": "master",
+  "data_file": "data/processed/reviews_cleaned.xlsx",
+  "data_sha256": "1cea4765a134a8720ba8a87af811725f39ad24fa1ec4a5d4d1aca65f6665fbdc",
+  "source_rows": 8417,
+  "modeling_rows": 8413,
+  "train_rows": 6730,
+  "test_rows": 1683,
+  "feature_count": 5005,
+  "feature_contract": {
+    "feature_mode": "text_plus_aspect",
+    "text_column": "clean_advance_text",
+    "label_column": "sentiment",
+    "numeric_columns": [
+      "Salary & benefits",
+      "Training & learning",
+      "Management cares about me",
+      "Culture & fun",
+      "Office & workspace"
+    ],
+    "numeric_scaler": "MinMaxScaler(0,1) fit trên train",
+    "split_seed": 2026,
+    "test_size": 0.2,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "max_features": 5000,
+    "min_df": 2,
+    "duplicate_audit": {
+      "input_rows": 8417,
+      "output_rows": 8413,
+      "duplicate_rows_removed": 4,
+      "conflicting_groups_removed": 1
+    },
+    "inference_requirement": "Cần đủ 5 điểm khía cạnh 1-5 lúc dự đoán; Web Demo text-only không cung cấp được, phải dùng artifact text-only cho demo."
+  },
+  "artifacts": {
+    "hybrid_feature_extractor.joblib": {
+      "sha256": "e22926bcb95620169bd28bb83a2543218e82326fcad66df39b4f0d3773b4cde1",
+      "bytes": 217652
+    },
+    "hybrid_train_test_features.joblib": {
+      "sha256": "6726345cb58c3ea7c9f0872d46bdcba2399588768d9c1bf0caa267a0e1bd40f3",
+      "bytes": 4499157
+    }
+  }
+}

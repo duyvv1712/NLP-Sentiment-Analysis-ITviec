@@ -111,13 +111,38 @@ Cấu hình unigram + bigram cao hơn 0,0183 Macro F1 và được chọn cho b�
 | Nhóm feature | Macro F1 CV | Độ lệch chuẩn | Vai trò |
 |---|---:|---:|---|
 | Aspect ratings only | 0,7388 | 0,0069 | Diagnostic/tabular upper bound |
-| Full structured hybrid | 0,7373 | 0,0101 | Diagnostic, không dùng cho demo text-only |
-| Text-only | 0,5579 | 0,0127 | **Pipeline NLP chính** |
+| Full structured hybrid | 0,7373 | 0,0101 | Diagnostic |
+| Text-only | 0,5579 | 0,0127 | Pipeline NLP dùng cho Web Demo |
 | Text + lexicon | 0,5556 | 0,0138 | Ablation; lexicon hiện không cải thiện |
 
-Aspect-only cao hơn text-only cho thấy điểm khía cạnh là shortcut rất mạnh đối với weak label tạo từ Rating. Kết quả này không chứng minh mô hình hiểu ngôn ngữ. Ngoài ra demo text-only không có năm điểm khía cạnh lúc inference. Vì vậy artifact chính chỉ chứa TF-IDF text; aspect/hybrid chỉ được giữ như thí nghiệm chẩn đoán.
+Aspect-only cao hơn text-only cho thấy điểm khía cạnh là shortcut rất mạnh đối với weak label tạo từ Rating; riêng kết quả này không chứng minh mô hình hiểu ngôn ngữ.
 
 ![Ablation nhóm feature trên development CV](figures/eda_feature_ablation_cv.png)
+
+### Ablation mở rộng: ghép điểm khía cạnh để cải thiện Neutral và Negative
+
+Ablation ở trên chỉ báo Macro F1 nên chưa trả lời được câu hỏi nhóm quan tâm: điểm khía cạnh có giúp tách lớp Neutral và kéo Recall lớp Negative lên không. Thí nghiệm bổ sung (`scripts/run_aspect_hybrid_ablation.py`) dùng lại đúng giao thức — 5-fold Stratified CV trên development, `random_state=2026`, TF-IDF `(1, 2)` 5.000 chiều, `MinMaxScaler` và vectorizer fit lại trong từng fold, Logistic Regression `class_weight='balanced'` — và báo cáo thêm chỉ số từng lớp.
+
+| Nhóm feature | Macro F1 | Neutral F1 | Recall Negative | Negative F1 | Accuracy |
+|---|---:|---:|---:|---:|---:|
+| Text-only | 0,5579 | 0,4456 | 0,4563 | 0,3894 | 0,7158 |
+| **Text + aspect** | **0,7369** | **0,6441** | **0,6952** | **0,6485** | **0,8373** |
+| Text + lexicon + aspect | 0,7373 | 0,6439 | 0,7017 | 0,6498 | 0,8373 |
+| Aspect ratings only | 0,7388 | 0,6353 | 0,7676 | 0,6649 | 0,8337 |
+
+Baseline text-only tái lập đúng 0,5579 Macro F1 như bảng trên, xác nhận hai thí nghiệm so sánh được với nhau.
+
+Ghép năm điểm khía cạnh vào vector TF-IDF cải thiện rõ rệt đúng hai điểm yếu đã nêu:
+
+- **Neutral F1: 0,4456 → 0,6441** (+0,1985).
+- **Recall Negative: 0,4563 → 0,6952** (+0,2389).
+- Macro F1: 0,5579 → 0,7369 (+0,1790).
+
+Thêm nhóm lexicon lên trên aspect gần như không đổi (+0,0004 Macro F1), nên cấu hình bàn giao chọn **text + aspect** cho gọn. Đáng chú ý, `Aspect ratings only` có Macro F1 và Recall Negative cao nhất nhưng **Neutral F1 thấp hơn** text + aspect (0,6353 so với 0,6441): phần văn bản vẫn đóng góp riêng cho việc tách lớp Neutral, tức là hybrid không phải chỉ đơn thuần đọc lại điểm số.
+
+Năm cột khía cạnh không có giá trị thiếu (0,00% trên cả năm cột), nên bước `fillna(0.0)` trong `FeatureExtractor._prepare_numeric` không kích hoạt và không tạo giá trị 0 giả nằm ngoài thang 1-5.
+
+**Giới hạn phải ghi trong báo cáo khi trình bày bảng này.** Nhãn `sentiment` được suy ra từ `Rating`, và điểm khía cạnh tương quan Spearman 0,5423-0,7368 với `Rating`. Vì vậy phần lớn mức tăng đến từ việc mô hình khôi phục lại thang điểm đã sinh ra nhãn, chứ không phải từ việc hiểu văn bản tốt hơn. Ngoài ra artifact hybrid cần đủ năm điểm khía cạnh lúc dự đoán, trong khi Web Demo chỉ nhận văn bản tự do. Kết luận vận hành: **hybrid dùng cho phần thực nghiệm và bảng so sánh mô hình; Web Demo giữ artifact text-only.** Hai artifact dùng chung split và seed nên số liệu đặt cạnh nhau được.
 
 Ma trận text-only cuối cùng:
 
@@ -144,6 +169,11 @@ Do dữ liệu TF-IDF có số chiều cao, SMOTE có thể tạo các vector t�
 - `models/train_test_features.joblib`: ma trận development/final-test, nhãn, indices, feature names và metadata.
 - `models/artifact_manifest.json`: runtime versions, dataset hash, Git SHA và checksum artifact.
 - `requirements.lock`: môi trường Python 3.11 tái lập được để đọc artifact.
+- `scripts/run_aspect_hybrid_ablation.py`: ablation text/aspect kèm chỉ số từng lớp; xuất `reports/aspect_hybrid_ablation.csv`.
+- `scripts/build_hybrid_artifacts.py`: dựng artifact hybrid, không đụng tới artifact text-only.
+- `models/hybrid_feature_extractor.joblib`: extractor TF-IDF + 5 điểm khía cạnh đã fit trên development (dùng `transform_hybrid`).
+- `models/hybrid_train_test_features.joblib`: ma trận 6.730 × 5.005 và 1.683 × 5.005, cùng split/seed với bản text-only.
+- `models/hybrid_artifact_manifest.json`: feature contract của bản hybrid, kèm ràng buộc dữ liệu lúc inference.
 - `data/annotation/sentiment_audit_blind.csv` và `sentiment_audit_key.csv`: bộ 300 review cho hai người gán nhãn thủ công độc lập.
 - `reports/overview_for_team.md`: giải thích pipeline bằng ngôn ngữ đơn giản.
 - `reports/figures/`: chín biểu đồ EDA/feature diagnostics độ phân giải 300 dpi.
