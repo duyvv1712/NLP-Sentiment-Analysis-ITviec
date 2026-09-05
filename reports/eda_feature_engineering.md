@@ -50,6 +50,19 @@ Lớp Positive chiếm gần ba phần tư dữ liệu và lớn gấp khoảng 
 
 Phân bố độ dài lệch phải rõ rệt. Phần lớn review ngắn, nhưng tồn tại một số ngoại lệ rất dài. Biểu diễn TF-IDF phù hợp với dải độ dài biến thiên này vì sử dụng trọng số chuẩn hóa thay cho số lần xuất hiện tuyệt đối.
 
+### Thống kê token rỗng và review quá ngắn
+
+Chuỗi `clean_advance_text` sau tiền xử lý được kiểm tra để xác định có review nào bị mất toàn bộ nội dung hay không, vì tài liệu rỗng sẽ tạo vector TF-IDF toàn số 0 và trở thành nhiễu trong huấn luyện.
+
+| Nhóm | Số review | Tỷ lệ |
+|---|---:|---:|
+| Chuỗi rỗng hoàn toàn | 0 | 0,00% |
+| Dưới 3 token | 0 | 0,00% |
+| Dưới 5 token | 0 | 0,00% |
+| Dưới 10 token | 35 | 0,42% |
+
+Trên 8.413 review dùng cho mô hình, số token trung bình là 35,95, trung vị 28, nhỏ nhất 5 và lớn nhất 511. Không tồn tại tài liệu rỗng hay quá ngắn tới mức vô nghĩa, nên không cần thêm bước lọc theo độ dài trước khi vector hóa.
+
 ### Quan hệ giữa điểm khía cạnh và cảm xúc tổng thể
 
 Tương quan Spearman với `Rating`, theo thứ tự giảm dần:
@@ -103,6 +116,17 @@ TF-IDF được fit trên `clean_advance_text` với `max_features=5000`, `min_d
 Cấu hình unigram kết hợp bigram cao hơn 0,0183 Macro F1 và được chọn cho toàn bộ thí nghiệm phía sau.
 
 ![So sánh n-gram](figures/eda_tfidf_ngram_comparison.png)
+
+### So sánh phương pháp vector hóa
+
+Hai phương pháp biểu diễn văn bản được so sánh trên cùng bộ fold, cùng cấu hình từ vựng và cùng bộ phân loại:
+
+| Phương pháp | Macro F1 | Neutral F1 | Recall Negative | Negative F1 | Accuracy |
+|---|---:|---:|---:|---:|---:|
+| **TF-IDF, sublinear TF** | **0,5579** | **0,4456** | **0,4563** | **0,3894** | 0,7158 |
+| Bag-of-Words | 0,5418 | 0,4147 | 0,3773 | 0,3706 | **0,7177** |
+
+TF-IDF cao hơn 0,0161 Macro F1 và cải thiện ở 4 trên 5 fold. Kết quả này minh họa rõ vì sao Accuracy không được chọn làm chỉ số quyết định: Bag-of-Words đạt Accuracy cao hơn (0,7177 so với 0,7158) nhưng Recall lớp Negative thấp hơn đáng kể (0,3773 so với 0,4563). Bag-of-Words đếm số lần xuất hiện tuyệt đối nên chịu ảnh hưởng mạnh từ các từ phổ biến của lớp đa số, trong khi trọng số nghịch đảo tần suất tài liệu của TF-IDF làm giảm ảnh hưởng đó. Toàn bộ thí nghiệm phía sau dùng TF-IDF.
 
 ### Ablation nhóm đặc trưng
 
@@ -176,12 +200,19 @@ Phân bố nhãn trên tập phát triển gồm 4.964 Positive, 1.310 Neutral v
 
 ### Xử lý mất cân bằng lớp
 
-Hai chiến lược được chuẩn bị để đánh giá chéo ở giai đoạn mô hình hóa.
+Với tỷ lệ lớp Positive gấp 10,9 lần lớp Negative, ba chiến lược được so sánh thực nghiệm trên cùng giao thức. SMOTE chỉ áp dụng trên phần huấn luyện của từng fold, không bao giờ trên phần kiểm định, nhằm tránh việc mẫu tổng hợp rò rỉ sang dữ liệu đánh giá.
 
-1. Sử dụng `class_weight='balanced'` đối với các mô hình hỗ trợ trọng số lớp.
-2. Áp dụng SMOTE **bên trong từng fold của tập phát triển**. Phép minh họa tạo 4.964 mẫu cho mỗi lớp, tổng cộng 14.892 mẫu. Tập kiểm tra cuối không được resample.
+| Chiến lược | Macro F1 | Neutral F1 | Recall Negative | Negative F1 | Accuracy |
+|---|---:|---:|---:|---:|---:|
+| Không xử lý | 0,4622 | 0,3508 | 0,0921 | 0,1646 | **0,7676** |
+| `class_weight='balanced'` | 0,5579 | **0,4456** | **0,4563** | 0,3894 | 0,7158 |
+| SMOTE | **0,5600** | 0,4340 | 0,4410 | **0,3989** | 0,7263 |
 
-Do biểu diễn TF-IDF có số chiều cao, SMOTE có thể sinh ra các vector tổng hợp khó diễn giải về mặt ngữ nghĩa. Việc lựa chọn giữa hai chiến lược cần căn cứ trên Macro F1, Recall lớp Negative và ma trận nhầm lẫn, không căn cứ trên Accuracy.
+Cấu hình không xử lý mất cân bằng cho kết quả có ý nghĩa quan trọng về mặt phương pháp. Nó đạt **Accuracy cao nhất trong cả ba** (0,7676) nhưng Recall lớp Negative chỉ 0,0921, tức là bỏ sót hơn 90% review tiêu cực. Đây là bằng chứng trực tiếp cho nhận định ở mục 2.2 rằng Accuracy không phải chỉ số đánh giá phù hợp với bộ dữ liệu này.
+
+Giữa hai chiến lược còn lại, SMOTE cao hơn 0,0020 Macro F1 nhưng chỉ cải thiện ở 2 trên 5 fold, tức là không phân biệt được với `class_weight='balanced'` ở mức nhiễu hiện tại. Trong khi đó `class_weight='balanced'` cho Recall lớp Negative cao hơn (0,4563 so với 0,4410), không sinh thêm mẫu tổng hợp, và giữ nguyên kích thước ma trận huấn luyện. Với biểu diễn TF-IDF thưa và số chiều cao, các vector do SMOTE nội suy cũng khó diễn giải về mặt ngữ nghĩa vì không tương ứng với văn bản có thật.
+
+Từ các căn cứ trên, `class_weight='balanced'` được chọn làm chiến lược mặc định cho mọi thí nghiệm trong báo cáo. SMOTE được giữ lại trong `src/features.py` như một lựa chọn thay thế cho các mô hình không hỗ trợ trọng số lớp.
 
 ## Phụ lục: tài nguyên tái lập kết quả
 
@@ -200,6 +231,10 @@ Do biểu diễn TF-IDF có số chiều cao, SMOTE có thể sinh ra các vecto
 | `reports/aspect_hybrid_ablation.csv` | Kết quả ablation tổng hợp |
 | `reports/aspect_hybrid_ablation_per_fold.csv` | Kết quả ablation chi tiết theo từng fold |
 | `scripts/plot_ablation_figures.py` | Sinh lại hai biểu đồ ablation từ kết quả đã lưu |
+| `scripts/run_tv2_feature_experiments.py` | Thống kê token rỗng, so sánh TF-IDF với Bag-of-Words, so sánh chiến lược cân bằng lớp |
+| `reports/tv2_empty_token_stats.csv` | Thống kê token rỗng và review ngắn |
+| `reports/tv2_vectorizer_comparison.csv` | Kết quả so sánh TF-IDF với Bag-of-Words |
+| `reports/tv2_balancing_comparison.csv` | Kết quả so sánh chiến lược cân bằng lớp |
 | `data/annotation/sentiment_audit_blind.csv`, `sentiment_audit_key.csv` | Bộ 300 review phục vụ gán nhãn thủ công độc lập |
 | `requirements.lock` | Môi trường Python 3.11 tái lập được |
 | `reports/figures/` | Mười biểu đồ phân tích, độ phân giải 300 dpi |
