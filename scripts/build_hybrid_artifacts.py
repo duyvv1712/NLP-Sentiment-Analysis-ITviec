@@ -17,6 +17,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.features import (  # noqa: E402
     ASPECT_RATING_FEATURES,
+    LEXICON_FEATURES,
+    STRUCTURED_FEATURES,
     FeatureExtractor,
     deduplicate_modeling_rows,
     prepare_feature_split,
@@ -54,20 +56,20 @@ def main() -> None:
         max_features=MAX_FEATURES,
         ngram_range=NGRAM_RANGE,
         min_df=MIN_DF,
-        numeric_features=ASPECT_RATING_FEATURES,
+        numeric_features=STRUCTURED_FEATURES,
     )
     split = prepare_feature_split(
         modeling_df,
         extractor=extractor,
         text_column="clean_advance_text",
         label_column="sentiment",
-        numeric_columns=ASPECT_RATING_FEATURES,
+        numeric_columns=STRUCTURED_FEATURES,
         test_size=0.2,
         random_state=RANDOM_STATE,
     )
 
     print(f"X_train: {split.X_train.shape} | X_test: {split.X_test.shape}")
-    print(f"Cột số cuối ma trận: {list(extractor.get_feature_names_out()[-5:])}")
+    print(f"Cột số cuối ma trận: {list(extractor.get_feature_names_out()[-10:])}")
 
     extractor_path = MODELS_DIR / "hybrid_feature_extractor.joblib"
     split_path = MODELS_DIR / "hybrid_train_test_features.joblib"
@@ -77,7 +79,8 @@ def main() -> None:
         split_path,
         extractor,
         metadata={
-            "feature_mode": "text_plus_aspect",
+            "feature_mode": "text_plus_structured",
+            "lexicon_columns": list(LEXICON_FEATURES),
             "aspect_columns": list(ASPECT_RATING_FEATURES),
         },
     )
@@ -94,10 +97,10 @@ def main() -> None:
         "test_rows": int(split.X_test.shape[0]),
         "feature_count": int(split.X_train.shape[1]),
         "feature_contract": {
-            "feature_mode": "text_plus_aspect",
+            "feature_mode": "text_plus_structured",
             "text_column": "clean_advance_text",
             "label_column": "sentiment",
-            "numeric_columns": list(ASPECT_RATING_FEATURES),
+            "numeric_columns": list(STRUCTURED_FEATURES),
             "numeric_scaler": "MinMaxScaler(0,1) fit trên train",
             "split_seed": RANDOM_STATE,
             "test_size": 0.2,
@@ -106,8 +109,9 @@ def main() -> None:
             "min_df": MIN_DF,
             "duplicate_audit": audit,
             "inference_requirement": (
-                "Cần đủ 5 điểm khía cạnh 1-5 lúc dự đoán; Web Demo text-only "
-                "không cung cấp được, phải dùng artifact text-only cho demo."
+                "Cần đủ 5 điểm khía cạnh 1-5 lúc dự đoán (lexicon thì tính "
+                "được từ text). Web Demo text-only không có điểm khía cạnh nên "
+                "phải dùng artifact text-only."
             ),
         },
         "artifacts": {

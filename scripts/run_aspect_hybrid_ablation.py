@@ -6,6 +6,9 @@ Stratified CV trên development, vectorizer và scaler fit lại trong từng fo
 
 Khác biệt so với ablation cũ: báo cáo thêm F1 từng lớp và Recall lớp Negative,
 vì đó là hai chỉ số nhóm đang muốn cải thiện (Neutral F1, Recall Negative).
+
+Cập nhật: chạy lại sau khi TV1 thay thuật toán Lexicon bằng Greedy Longest
+Phrase Matching (độ bao phủ 12,26% -> 99,54%), bổ sung nhóm `Text + lexicon`.
 """
 
 from pathlib import Path
@@ -75,6 +78,7 @@ def main() -> None:
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
     group_names = [
         "Text-only",
+        "Text + lexicon",
         "Text + aspect",
         "Text + lexicon + aspect",
         "Aspect ratings only",
@@ -99,6 +103,10 @@ def main() -> None:
 
         feature_sets = {
             "Text-only": (X_text_train, X_text_valid),
+            "Text + lexicon": (
+                sparse.hstack([X_text_train, X_lex_train], format="csr"),
+                sparse.hstack([X_text_valid, X_lex_valid], format="csr"),
+            ),
             "Text + aspect": (
                 sparse.hstack([X_text_train, X_asp_train], format="csr"),
                 sparse.hstack([X_text_valid, X_asp_valid], format="csr"),
@@ -155,6 +163,28 @@ def main() -> None:
     print("\n===== KẾT QUẢ 5-FOLD CV TRÊN DEVELOPMENT =====")
     print(results[display_columns].round(4).to_string(index=False))
     print(f"\nĐã lưu: {output}")
+
+    baseline = pd.DataFrame(records["Text-only"])
+    print("\n===== SO SÁNH THEO CẶP FOLD VỚI TEXT-ONLY =====")
+    print("(cùng fold, cùng seed nên chênh lệch từng fold so sánh trực tiếp được)")
+    for name in group_names[1:]:
+        frame = pd.DataFrame(records[name])
+        delta = frame["macro_f1"] - baseline["macro_f1"]
+        wins = int((delta > 0).sum())
+        print(
+            f"  {name:<24} Macro F1 delta = {delta.mean():+.4f} "
+            f"(std {delta.std(ddof=0):.4f}, thắng {wins}/5 fold, "
+            f"min {delta.min():+.4f}, max {delta.max():+.4f})"
+        )
+
+    per_fold = pd.concat(
+        [pd.DataFrame(records[name]).assign(feature_group=name, fold=range(1, 6))
+         for name in group_names],
+        ignore_index=True,
+    )
+    per_fold_path = REPORTS_DIR / "aspect_hybrid_ablation_per_fold.csv"
+    per_fold.to_csv(per_fold_path, index=False)
+    print(f"\nĐã lưu chi tiết từng fold: {per_fold_path}")
 
 
 if __name__ == "__main__":
