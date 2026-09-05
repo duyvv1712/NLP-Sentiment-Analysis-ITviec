@@ -48,6 +48,10 @@ phúc lợi đầy đủ
 phúc lợi hấp dẫn
 bảo hiểm đầy đủ
 bảo hiểm tốt
+chế độ bảo hiểm tốt
+chế độ bảo hiểm đầy đủ
+chế độ tốt
+chế độ rõ ràng
 OT có lương
 OT ít
 phụ cấp tốt
@@ -143,6 +147,52 @@ yêu thích công việc
 recommend
 nên apply
 đáng làm việc
+tuyệt vời
+rất tốt
+khá tốt
+cực tốt
+quá tốt
+
+# --- TÍNH TỪ & TỪ CẢM XÚC ĐƠN CỐT LÕI (CORE POSITIVE UNIGRAMS & SHORT PHRASES) ---
+tốt
+đẹp
+ổn
+tạm ổn
+ổn áp
+xịn
+xịn sò
+thích
+vui
+hay
+tuyệt
+tuyệt quá
+ngon
+rộng
+rộng rãi
+sạch
+sạch sẽ
+thoáng
+thoáng mát
+chu đáo
+tử tế
+chuẩn mực
+phù hợp
+tiện
+tiện lợi
+thuận tiện
+tận tình
+hữu ích
+đầy đủ
+rõ ràng
+chất lượng
+chất lượng cao
+uy tín
+đáng giá
+thoả đáng
+thỏa đáng
+khang trang
+hiện đại
+ấm cúng
 
 # --- TỪ TIẾNG ANH PHỔ BIẾN TRONG CỘNG ĐỒNG IT ---
 friendly
@@ -166,28 +216,27 @@ good culture
 open communication
 recognition
 positive environment
-
-# --- BỔ SUNG: TỪ ĐƠN & CỤM TỪ TÍCH CỰC PHỔ BIẾN (TĂNG ĐỘ BAO PHỦ) ---
-tốt
-ổn
-đẹp
-thích
-xịn
-xịn xò
+good
+great
+nice
+cool
 ok
+okay
+awesome
+excellent
+
+# --- TỪ VỰNG BỔ SUNG ĐỒNG BỘ TỪ DỰ ÁN NLP ---
+xịn xò
 oke
 chuẩn
 chuẩn chỉ
 pro
 khỏe
 xinh
-good
-great
 happy
 hoàn hảo
 mãi đỉnh
 lịch sự
-hữu ích
 proactive
 độc đáo
 máu lửa
@@ -196,88 +245,43 @@ chăm chỉ
 nhanh chóng
 thuận lợi
 yêu thương
-ấm cúng
 dễ thương
-tử tế
-tự hào
 khích lệ
 động viên
-tuyệt vời
-tuyệt quá
-tuyệt
-rất tốt
-khá tốt
-cực tốt
-quá tốt
 tốt hơn
 rất ổn
 khá ổn
-tạm ổn
-hài lòng
 rất hài lòng
-thỏa đáng
-chế độ bảo hiểm tốt
-chế độ bảo hiểm đầy đủ
-chế độ tốt
-chế độ rõ ràng
 đãi ngộ tốt
-phúc lợi tốt
-phúc lợi đầy đủ
 chính sách tốt
-lương tốt
-thưởng tốt
-sếp tốt
-đồng nghiệp tốt
 công ty tốt
-môi trường tốt
 work life balance
 văn phòng đẹp
-thoáng mát
-sạch sẽ
-rộng rãi
-hiện đại
 tiện nghi
 học hỏi được nhiều
 nhiều cơ hội
-cơ hội phát triển
 cơ hội thăng tiến
 được học hỏi
 học hỏi
-phù hợp
 thích hợp
 đáng trải nghiệm
-gắn bó
 gắn bó lâu dài
 công bằng
-tôn trọng
 lắng nghe
 quan tâm
 tạo điều kiện
 tiềm năng
-uy tín
-chất lượng
 ưu đãi
 hấp dẫn
 cạnh tranh
 xứng đáng
 hậu hĩnh
-bền vững
-ổn định
 an toàn
 đúng hạn
 đúng ngày
-chu đáo
-tận tình
-nhiệt tình
 hỗ trợ
 giúp đỡ
-thân thiện
-hòa đồng
-vui vẻ
-cởi mở
-thoải mái
 tự do
-linh hoạt
 flexible
 yên tĩnh
 an tâm

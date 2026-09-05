@@ -81,3 +81,39 @@
 🤔	phân vân suy nghĩ chưa rõ
 😐	bình thường trung tính
 😶	không có gì đặc biệt
+
+# --- BIỂU TƯỢNG CẢM XÚC DẠNG KÝ TỰ (ASCII EMOTICONS) ---
+:))))	rất vui hài lòng
+:)))	rất vui hài lòng
+:))	vui hài lòng
+:)	vui vẻ hài lòng
+:-)	vui vẻ hài lòng
+:D	cười vui hài lòng
+:-D	cười vui hài lòng
+:P	hài hước trêu đùa
+:-P	hài hước trêu đùa
+:p	hài hước trêu đùa
+:-p	hài hước trêu đùa
+:v	hài hước vui nhộn
+:-v	hài hước vui nhộn
+:3	dễ thương đáng yêu
+^^	vui vẻ dễ thương
+^_^	vui vẻ dễ thương
+^__^	vui vẻ dễ thương
+<3	yêu thích tuyệt vời
+(y)	tốt hài lòng
+(Y)	tốt hài lòng
+:((((	rất buồn thất vọng
+:(((	rất buồn thất vọng
+:((	buồn thất vọng
+:(	buồn không hài lòng
+:-(	buồn không hài lòng
+:'(	khóc buồn
+:'-(	khóc buồn
+:-(	buồn thất vọng
+:/	băn khoăn không hài lòng
+:-/	băn khoăn không hài lòng
+:\	băn khoăn không hài lòng
+:-\	băn khoăn không hài lòng
+(n)	không thích tệ
+(N)	không thích tệ
