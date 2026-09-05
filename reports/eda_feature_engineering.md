@@ -120,6 +120,8 @@ Năm nhóm đặc trưng được so sánh trên cùng bộ fold, cùng seed và
 
 ![Ablation nhóm đặc trưng trên tập phát triển](figures/eda_feature_ablation_cv.png)
 
+![Chỉ số theo lớp thiểu số của từng nhóm đặc trưng](figures/eda_ablation_per_class.png)
+
 Trường `clean_advance_text` không thay đổi sau khi cập nhật thuật toán từ điển, giống hệt trên toàn bộ 8.417 dòng. Nhờ vậy cấu hình Text-only tái lập đúng giá trị 0,5579 của thí nghiệm n-gram, xác nhận hai bảng số liệu so sánh trực tiếp được với nhau.
 
 ### Kiểm định theo cặp fold
@@ -197,6 +199,7 @@ Do biểu diễn TF-IDF có số chiều cao, SMOTE có thể sinh ra các vecto
 | `models/artifact_manifest.json`, `models/hybrid_artifact_manifest.json` | Phiên bản môi trường, hash dữ liệu, Git SHA, checksum artifact |
 | `reports/aspect_hybrid_ablation.csv` | Kết quả ablation tổng hợp |
 | `reports/aspect_hybrid_ablation_per_fold.csv` | Kết quả ablation chi tiết theo từng fold |
+| `scripts/plot_ablation_figures.py` | Sinh lại hai biểu đồ ablation từ kết quả đã lưu |
 | `data/annotation/sentiment_audit_blind.csv`, `sentiment_audit_key.csv` | Bộ 300 review phục vụ gán nhãn thủ công độc lập |
 | `requirements.lock` | Môi trường Python 3.11 tái lập được |
-| `reports/figures/` | Chín biểu đồ phân tích, độ phân giải 300 dpi |
+| `reports/figures/` | Mười biểu đồ phân tích, độ phân giải 300 dpi |
