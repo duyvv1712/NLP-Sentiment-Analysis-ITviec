@@ -2,14 +2,19 @@
 
 import streamlit as st
 
-from src.app_theme import apply_app_style, render_theme_picker
+from src.app_theme import apply_app_style
 
 
 st.set_page_config(
     page_title="ITviec Sentiment Lab",
-    page_icon=":material/insights:",
+    page_icon="assets/sentiment-lab-mark.svg",
     layout="wide",
     initial_sidebar_state="expanded",
+)
+st.logo(
+    "assets/sentiment-lab-logo.svg",
+    icon_image="assets/sentiment-lab-mark.svg",
+    size="large",
 )
 apply_app_style()
 
@@ -37,7 +42,6 @@ pages = {
 }
 
 with st.sidebar:
-    st.markdown("### :material/psychology: Sentiment Lab")
     st.caption("Phân tích cảm xúc review ngành công nghệ trên ITviec.")
 
 current_page = st.navigation(pages, position="sidebar", expanded=True)
@@ -45,8 +49,5 @@ current_page = st.navigation(pages, position="sidebar", expanded=True)
 with st.sidebar:
     st.badge("Dữ liệu thật", icon=":material/database:", color="green")
     st.caption("8.417 review · 180 doanh nghiệp · 3 nhóm cảm xúc")
-    st.caption("TV4 · Phạm Thành Trung")
-    st.space("stretch")
-    render_theme_picker()
 
 current_page.run()

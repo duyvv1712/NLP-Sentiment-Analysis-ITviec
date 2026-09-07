@@ -204,9 +204,9 @@ python -m streamlit run app.py
 phân tích review. Khi TV3 chưa bàn giao model, trang dự đoán hiển thị
 trạng thái chờ và không sinh nhãn hoặc confidence giả.
 
-Giao diện hỗ trợ ba chế độ `System`, `Light` và `Dark`. Bấm nút
-**Giao diện** ở cuối sidebar để chọn; `System` tự động theo cài đặt
-sáng/tối của hệ điều hành, còn `Dark` dùng bảng màu dark navy.
+Giao diện được khóa ở chế độ tối theo phong cách developer tool với điểm nhấn
+xanh lam và xanh mint. Vùng nội dung được giới hạn chiều rộng để giữ tỷ lệ
+card và biểu đồ dễ đọc trên màn hình ultrawide.
 
 ---
 

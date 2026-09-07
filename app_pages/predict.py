@@ -52,7 +52,7 @@ st.title("Phân tích cảm xúc review")
 st.caption("Nhập nội dung tự nhiên; hệ thống chỉ sử dụng văn bản, không dùng rating.")
 
 status = get_model_status()
-with st.container(border=True):
+with st.container(border=True, key="model_status_panel"):
     with st.container(horizontal=True, vertical_alignment="center"):
         if status.ready:
             st.badge("Model sẵn sàng", icon=":material/check_circle:", color="green")
@@ -129,16 +129,16 @@ if submitted:
 
 st.subheader("Pipeline suy luận")
 with st.container(horizontal=True):
-    with st.container(border=True):
+    with st.container(border=True, key="pipeline_review_card"):
         st.markdown("#### :material/chat: 1. Review")
         st.caption("Nội dung người dùng nhập, không yêu cầu rating hay thông tin công ty.")
-    with st.container(border=True):
+    with st.container(border=True, key="pipeline_clean_card"):
         st.markdown("#### :material/cleaning_services: 2. Tiền xử lý")
         st.caption("Chuẩn hóa Unicode, emoji, teencode, tách từ và loại stopword.")
-    with st.container(border=True):
+    with st.container(border=True, key="pipeline_vector_card"):
         st.markdown("#### :material/hub: 3. TF-IDF")
         st.caption("Biến văn bản thành vector 5.000 đặc trưng theo artifact đã khóa.")
-    with st.container(border=True):
+    with st.container(border=True, key="pipeline_result_card"):
         st.markdown("#### :material/label: 4. Cảm xúc")
         st.caption("Trả về Tích cực, Trung tính hoặc Tiêu cực khi model sẵn sàng.")
 

@@ -40,16 +40,40 @@ positive_share = float(summary.loc[summary["sentiment"] == "Positive", "share"].
 negative_share = float(summary.loc[summary["sentiment"] == "Negative", "share"].iloc[0])
 average_rating = float(reviews["Rating"].mean())
 
-with st.container(horizontal=True):
-    st.metric("Tổng review", f"{len(reviews):,}", border=True)
-    st.metric("Doanh nghiệp", f"{reviews['Company Name'].nunique():,}", border=True)
-    st.metric("Tỷ lệ tích cực", f"{positive_share:.1f}%", border=True)
-    st.metric("Điểm trung bình", f"{average_rating:.2f}/5", border=True)
+with st.container(horizontal=True, gap="xsmall"):
+    with st.container(key="kpi_reviews"):
+        st.metric(
+            "Tổng review",
+            f"{len(reviews):,}",
+            icon=":material/rate_review:",
+            border=True,
+        )
+    with st.container(key="kpi_companies"):
+        st.metric(
+            "Doanh nghiệp",
+            f"{reviews['Company Name'].nunique():,}",
+            icon=":material/domain:",
+            border=True,
+        )
+    with st.container(key="kpi_positive"):
+        st.metric(
+            "Tỷ lệ tích cực",
+            f"{positive_share:.1f}%",
+            icon=":material/sentiment_satisfied:",
+            border=True,
+        )
+    with st.container(key="kpi_rating"):
+        st.metric(
+            "Điểm trung bình",
+            f"{average_rating:.2f}/5",
+            icon=":material/star:",
+            border=True,
+        )
 
 left, right = st.columns([1.35, 1], gap="large")
 with left:
-    with st.container(border=True, height="stretch"):
-        st.subheader("Bức tranh cảm xúc")
+    with st.container(border=True, height="stretch", key="overview_sentiment_panel"):
+        st.subheader(":material/donut_large: Bức tranh cảm xúc")
         st.caption("Nhãn yếu được suy ra từ rating do người viết review cung cấp.")
         chart = (
             alt.Chart(summary)
@@ -73,8 +97,8 @@ with left:
         st.altair_chart(chart, width="stretch")
 
 with right:
-    with st.container(border=True, height="stretch"):
-        st.subheader("Từ dữ liệu đến quyết định")
+    with st.container(border=True, height="stretch", key="overview_journey_panel"):
+        st.subheader(":material/route: Từ dữ liệu đến quyết định")
         st.markdown(
             """
             **01 · Khám phá**
@@ -90,21 +114,23 @@ with right:
             Nhập review mới và kết nối mô hình ngay khi TV3 bàn giao artifact.
             """
         )
-        st.metric(
-            "Review tiêu cực cần ưu tiên phân tích",
-            f"{negative_share:.1f}%",
-            border=True,
-        )
+        with st.container(key="kpi_negative"):
+            st.metric(
+                "Review tiêu cực cần ưu tiên phân tích",
+                f"{negative_share:.1f}%",
+                icon=":material/priority_high:",
+                border=True,
+            )
 
 st.subheader("Ba lớp của sản phẩm")
 with st.container(horizontal=True):
-    with st.container(border=True):
+    with st.container(border=True, key="product_data_card"):
         st.markdown("#### :material/database: Dữ liệu thật")
         st.write("Review đã làm sạch, gán nhãn và giữ nguyên ngữ cảnh doanh nghiệp.")
-    with st.container(border=True):
+    with st.container(border=True, key="product_insight_card"):
         st.markdown("#### :material/monitoring: Insight trực quan")
         st.write("KPI, xu hướng theo thời gian, từ khóa và review chi tiết trong một dashboard.")
-    with st.container(border=True):
+    with st.container(border=True, key="product_model_card"):
         st.markdown("#### :material/model_training: NLP text-only")
         st.write("Pipeline được thiết kế để chỉ dùng nội dung review khi suy luận.")
 

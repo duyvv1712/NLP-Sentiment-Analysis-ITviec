@@ -27,7 +27,7 @@ def make_wordcloud(text: str, sentiment: str, theme_type: str) -> bytes:
     from wordcloud import WordCloud
 
     if theme_type == "dark":
-        background_color = "#211F26"
+        background_color = "#121720"
         color_map = "summer" if sentiment == "Positive" else "autumn"
     else:
         background_color = "white"
@@ -58,8 +58,8 @@ except (FileNotFoundError, ValueError) as exc:
     st.error(str(exc), icon=":material/error:")
     st.stop()
 
-with st.container(border=True):
-    st.markdown("**Bộ lọc phân tích**")
+with st.container(border=True, key="insight_filter_panel"):
+    st.markdown("**:material/tune: Bộ lọc phân tích**")
     min_reviews = st.segmented_control(
         "Ngưỡng mẫu tối thiểu",
         options=[30, 50, 100, 200],
@@ -87,17 +87,22 @@ positive_share = float(summary.loc[summary["sentiment"] == "Positive", "share"].
 neutral_share = float(summary.loc[summary["sentiment"] == "Neutral", "share"].iloc[0])
 negative_share = float(summary.loc[summary["sentiment"] == "Negative", "share"].iloc[0])
 
-with st.container(horizontal=True):
-    st.metric("Review", f"{len(selected_reviews):,}", border=True)
-    st.metric("Tích cực", f"{positive_share:.1f}%", border=True)
-    st.metric("Trung tính", f"{neutral_share:.1f}%", border=True)
-    st.metric("Tiêu cực", f"{negative_share:.1f}%", border=True)
-    st.metric("Điểm trung bình", f"{selected_reviews['Rating'].mean():.2f}/5", border=True)
+with st.container(horizontal=True, gap="xsmall"):
+    with st.container(key="kpi_reviews"):
+        st.metric("Review", f"{len(selected_reviews):,}", icon=":material/rate_review:", border=True)
+    with st.container(key="kpi_positive"):
+        st.metric("Tích cực", f"{positive_share:.1f}%", icon=":material/sentiment_satisfied:", border=True)
+    with st.container(key="kpi_neutral"):
+        st.metric("Trung tính", f"{neutral_share:.1f}%", icon=":material/sentiment_neutral:", border=True)
+    with st.container(key="kpi_negative"):
+        st.metric("Tiêu cực", f"{negative_share:.1f}%", icon=":material/sentiment_dissatisfied:", border=True)
+    with st.container(key="kpi_rating"):
+        st.metric("Điểm trung bình", f"{selected_reviews['Rating'].mean():.2f}/5", icon=":material/star:", border=True)
 
 left, right = st.columns([0.9, 1.4], gap="large")
 with left:
-    with st.container(border=True, height="stretch"):
-        st.subheader("Cơ cấu cảm xúc")
+    with st.container(border=True, height="stretch", key="insight_donut_panel"):
+        st.subheader(":material/donut_large: Cơ cấu cảm xúc")
         donut = (
             alt.Chart(summary)
             .mark_arc(innerRadius=68, outerRadius=118, cornerRadius=5)
@@ -119,8 +124,8 @@ with left:
         st.altair_chart(donut, width="stretch")
 
 with right:
-    with st.container(border=True, height="stretch"):
-        st.subheader("Xu hướng theo thời gian")
+    with st.container(border=True, height="stretch", key="insight_trend_panel"):
+        st.subheader(":material/timeline: Xu hướng theo thời gian")
         trend = monthly_sentiment(selected_reviews)
         if trend.empty:
             st.info("Không đủ dữ liệu thời gian để vẽ xu hướng.", icon=":material/info:")
@@ -175,7 +180,7 @@ if language_expander.open:
 
         cloud_col, terms_col = st.columns([1.5, 0.8], gap="large")
         with cloud_col:
-            with st.container(border=True, height="stretch"):
+            with st.container(border=True, height="stretch", key="wordcloud_panel"):
                 st.markdown(
                     "**WordCloud tích cực**"
                     if selected_tone == "Positive"
@@ -193,7 +198,7 @@ if language_expander.open:
                     )
 
         with terms_col:
-            with st.container(border=True, height="stretch"):
+            with st.container(border=True, height="stretch", key="terms_panel"):
                 st.markdown("**15 từ khóa xuất hiện nhiều**")
                 terms = top_terms(tone_reviews["clean_advance_text"], limit=15)
                 if terms.empty:
@@ -222,7 +227,7 @@ else:
     )
 
 st.subheader("So sánh doanh nghiệp đủ ngưỡng mẫu")
-with st.container(border=True):
+with st.container(border=True, key="company_table_panel"):
     st.caption(
         f"Có {len(companies)} doanh nghiệp đạt ngưỡng {threshold}+ review. "
         "Bảng được sắp xếp theo quy mô mẫu, không phải bảng xếp hạng nơi làm việc."
