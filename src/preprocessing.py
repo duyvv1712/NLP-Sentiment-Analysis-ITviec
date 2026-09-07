@@ -4,7 +4,6 @@ import unicodedata
 import pandas as pd
 import numpy as np
 from typing import List, Dict, Set, Tuple
-from underthesea import word_tokenize
 
 class TextPreprocessor:
     """
@@ -121,6 +120,10 @@ class TextPreprocessor:
         if not basic:
             return ""
         
+        # underthesea pulls in the Transformer/Torch stack. Import it only when
+        # tokenization is actually requested so dashboard pages stay lightweight.
+        from underthesea import word_tokenize
+
         tokenized = word_tokenize(basic, format="text")
         
         if remove_stopwords:

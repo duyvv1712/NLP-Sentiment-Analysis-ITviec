@@ -1,0 +1,72 @@
+# Dark-navy visual system for the ITviec sentiment dashboard.
+# Defining both variants enables Streamlit's System / Light / Dark switcher.
+[theme]
+base = "dark"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "16px"
+buttonRadius = "full"
+font = "'Roboto':https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+codeFont = "'Roboto Mono':https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap"
+codeFontSize = "14px"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["38px", "28px", "22px", "18px", "16px", "14px"]
+headingFontWeights = [500, 500, 500, 500, 500, 500]
+linkUnderline = false
+
+[theme.light]
+primaryColor = "#1D4ED8"
+backgroundColor = "#F8FAFF"
+secondaryBackgroundColor = "#EDF3FC"
+codeBackgroundColor = "#DFEAF8"
+codeTextColor = "#0F172A"
+textColor = "#0F172A"
+linkColor = "#1D4ED8"
+borderColor = "#C7D6EA"
+chartCategoricalColors = ["#059669", "#D97706", "#E11D48", "#2563EB", "#7C3AED", "#0891B2"]
+violetColor = "#7C3AED"
+redColor = "#E11D48"
+greenColor = "#059669"
+blueColor = "#2563EB"
+orangeColor = "#EA580C"
+yellowColor = "#D97706"
+dataframeBorderColor = "#C7D6EA"
+dataframeHeaderBackgroundColor = "#DFEAF8"
+
+[theme.dark]
+primaryColor = "#3B82F6"
+backgroundColor = "#07111F"
+secondaryBackgroundColor = "#0F1E33"
+codeBackgroundColor = "#132A46"
+codeTextColor = "#E8F1FF"
+textColor = "#E8F1FF"
+linkColor = "#60A5FA"
+borderColor = "#243B5A"
+chartCategoricalColors = ["#34D399", "#FBBF24", "#FB7185", "#60A5FA", "#A78BFA", "#22D3EE"]
+violetColor = "#A78BFA"
+redColor = "#FB7185"
+greenColor = "#34D399"
+blueColor = "#60A5FA"
+orangeColor = "#FB923C"
+yellowColor = "#FBBF24"
+dataframeBorderColor = "#243B5A"
+dataframeHeaderBackgroundColor = "#132A46"
+
+[theme.light.sidebar]
+backgroundColor = "#EDF3FC"
+secondaryBackgroundColor = "#DFEAF8"
+codeBackgroundColor = "#D4E2F5"
+borderColor = "#C7D6EA"
+
+[theme.dark.sidebar]
+backgroundColor = "#081525"
+secondaryBackgroundColor = "#10253D"
+codeBackgroundColor = "#152C48"
+borderColor = "#1F3A5F"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

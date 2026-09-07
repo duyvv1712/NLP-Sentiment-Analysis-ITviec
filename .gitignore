@@ -11,6 +11,7 @@ __pycache__/
 # Virtual environments
 venv/
 .venv/
+.venv311/
 env/
 
 # IDE files

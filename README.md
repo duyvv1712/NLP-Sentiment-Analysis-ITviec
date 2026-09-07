@@ -192,6 +192,22 @@ git push origin feature/<ten-nhanh-cua-ban>
 3. **Giai đoạn 3 (Insights & Demo):**
    - Chạy `notebooks/05_company_sentiment_insights.ipynb` để xuất biểu đồ thống kê cảm xúc và WordCloud theo từng công ty.
 
+### Chạy Web Demo Streamlit
+
+```powershell
+.\.venv311\Scripts\Activate.ps1
+python -m pip install -r requirements-app.lock
+python -m streamlit run app.py
+```
+
+Ứng dụng gồm trang tổng quan, dashboard insight doanh nghiệp và giao diện
+phân tích review. Khi TV3 chưa bàn giao model, trang dự đoán hiển thị
+trạng thái chờ và không sinh nhãn hoặc confidence giả.
+
+Giao diện hỗ trợ ba chế độ `System`, `Light` và `Dark`. Bấm nút
+**Giao diện** ở cuối sidebar để chọn; `System` tự động theo cài đặt
+sáng/tối của hệ điều hành, còn `Dark` dùng bảng màu dark navy.
+
 ---
 
 ## 7. Bảng Theo dõi Tiến độ Hiện tại (Current Project Status)
