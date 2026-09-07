@@ -1,382 +1,413 @@
 # ============================================================
-# TỪ ĐIỂN TEENCODE & TỪ LÓNG - Bài toán Sentiment Analysis ITviec
-# Định dạng: <teencode><TAB><từ chuẩn>
-# Cập nhật: 2026-08-27
+# TỪ ĐIỂN TEENCODE, VIẾT TẮT & THUẬT NGỮ IT - BÀI TOÁN ITVIEC
 # ============================================================
 
-# --- TỪ LÓNG ĐẶC THÙ IT/ITVIEC (THÊM MỚI) ---
-cty	công ty
-cv	công việc
-jd	mô tả công việc
-hr	nhân sự
-pm	quản lý dự án
-dev	lập trình viên
-fe	frontend
-be	backend
-fullstack	lập trình viên fullstack
-qa	kiểm thử
-ba	phân tích nghiệp vụ
-ux	thiết kế trải nghiệm người dùng
-ui	thiết kế giao diện
-po	product owner
-sm	scrum master
-tl	team lead
-tech lead	trưởng nhóm kỹ thuật
-mgr	quản lý
-ot	làm thêm giờ
-wfh	làm việc từ nhà
-remote 100%	làm việc từ xa hoàn toàn
-hybrid	làm việc kết hợp
-onboard	bắt đầu làm việc
-offboard	nghỉ việc
-resign	nghỉ việc
-apply	ứng tuyển
-offer	đề nghị việc làm
-package	gói lương thưởng
-benefit	phúc lợi
-insurance	bảo hiểm
-kpi	chỉ tiêu hiệu suất
-okr	mục tiêu và kết quả then chốt
 1on1	cuộc họp một một
-review	đánh giá hiệu suất
-feedback	phản hồi
-sprint	giai đoạn phát triển
-standup	họp ngắn hàng ngày
-retro	họp đánh giá sprint
-backlog	danh sách công việc tồn đọng
-deploy	triển khai
-ship	triển khai sản phẩm
-release	phát hành
-bug	lỗi phần mềm
-fix	sửa lỗi
-refactor	tái cấu trúc code
-deadline	hạn chót
-
-# --- TEENCODE PHỔ BIẾN ---
-ctrai	con trai
-khôg	không
-bme	bố mẹ
-cta	chúng ta
-mih	mình
-mqh	mối quan hệ
-cgai	con gái
-nhữg	những
-mng	mọi người
-qtam	quan tâm
-thươg	thương
-chug	chung
-thoy	thôi
-đki	đăng ký
-vch	vãi chưởng
-cùg	cùng
-pn	bạn
-thjk	thích
-ktra	kiểm tra
-nthe	như thế
-chúg	chúng
-tìh	tình
-phòg	phòng
-lòg	lòng
-từg	từng
-rằg	rằng
-sốg	sống
-thuơng	thương
-càg	càng
-bằg	bằng
-sviên	sinh viên
-đág	đáng
-nvay	như vậy
-nhjeu	nhiều
-xg	xuống
-zồi	rồi
-trag	trang
-atrai	anh trai
-kte	kinh tế
-độg	động
-gắg	gắng
-thgian	thời gian
-đồg	đồng
-btrai	bạn trai
-nthê	như thế
-hìhì	hì hì
-vọg	vọng
-đôg	đông
-răg	răng
-thườg	thường
-tcảm	tình cảm
-đứg	đứng
-ksao	không sao
-dz	đẹp trai
-cmày	chúng mày
-xuốg	xuống
-nkư	như
-lquan	liên quan
-tiếg	tiếng
-xih	xinh
-hìh	hình
-thàh	thành
-ngke	nghe
-dzậy	dậy
-tnào	thế nào
-tưởg	tưởng
-ctrinh	chương trình
-phog	phong
-hôg	không
-kũg	cũng
-trọg	trọng
-nthế	như thế
-năg	năng
-ngđó	người đó
-lquen	làm quen
-riêg	riêng
-ngag	ngang
-bnhiu	bao nhiêu
-kậu	cậu
-kqua	kết quả
-htrc	hôm trước
-địh	định
-gđình	gia đình
-giốg	giống
-csống	cuộc sống
-zùi	rồi
-bnhiêu	bao nhiêu
-cbị	chuẩn bị
-kòn	còn
-buôg	buông
-csong	cuộc sống
-chàg	chàng
-chăg	chăng
-ngàh	ngành
-llac	liên lạc
-nkưng	nhưng
-nắg	nắng
-tíh	tính
-khoảg	khoảng
-thík	thích
-ngđo	người đó
-ngkhác	người khác
-thẳg	thẳng
-kảm	cảm
-dàh	dành
-júp	giúp
-lặg	lặng
-vđê	vấn đề
-bbè	bạn bè
-bóg	bóng
-dky	đăng ký
-dòg	dòng
-uốg	uống
-tyêu	tình yêu
-đthoại	điện thoại
-qhe	quan hệ
-cviec	công việc
-tượg	tượng
-qà	quà
-thjc	thích
-nhưq	nhưng
-cđời	cuộc đời
-bthường	bình thường
-zà	gìa
-đáh	đánh
-xloi	xin lỗi
-zám	dám
-qtrọng	quan trọng
-bìh	bình
-lzi	làm gì
-qhệ	quan hệ
-hajzz	hai
-kủa	của
-lz	làm gì
-đóg	đóng
-cka	cha
-lgi	làm gì
-nvậy	như vậy
-qả	quả
-đkiện	điều kiện
-nèk	nè
-tlai	tương lai
-bsĩ	bác sĩ
-hkì	học kỳ
-vde	vấn đề
-chta	chúng ta
-ltinh	linh tinh
-ngyeu	người yêu
-đthoai	điện thoại
-snghĩ	suy nghĩ
-nặg	nặng
-họk	học
-dừg	dừng
-hphúc	hạnh phúc
-wtâm	quan tâm
-thíck	thích
-chuện	chuyện
-lạh	lạnh
-ntnày	như thế này
-lúk	lúc
-haj	hai
-mớj	mới
-hsơ	hồ sơ
-ctraj	con trai
-nyêu	người yêu
-rồii	rồi
-c	chị
-kih	kinh
-kb	kết bạn
-dthương	dễ thương
-nhiềuuu	nhiều
-ctrình	chương trình
-mìnk	mình
-mjh	mình
-ng	người
-vc	vợ chồng
-uhm	ừm
-thỳ	thì
-nyc	người yêu cũ
-tks	thanks
-nàg	nàng
-thôii	thôi
-bgái	bạn gái
-xink	xinh
-hđộng	hành động
-đhọc	đại học
-mk	mình
-bn	bạn
-thik	thích
-cj	chị
-mn	mọi người
-nguoi	người
-hok	không
-ko	không
-bik	biết
-vs	với
-cx	cũng
-mik	mình
-đc	được
-cmt	comment
-ck	chồng
-chk	chồng
-ngta	người ta
-gđ	gia đình
-oh	ồ
-vk	vợ
-ctác	công tác
-sg	sài gòn
-ae	anh em
-ah	à
-ạh	ạ
-rì	gì
-vn	việt nam
-nhaa	nha
-cũg	cũng
-đag	đang
-ace	anh chị em
-àk	à
-uh	ừ
-ơiii	ơi
-hic	hích
-hnay	hôm nay
-ukm	ừm
-tq	trung quốc
-ctr	chương trình
-đii	đi
-nch	nói chuyện
-trieu	triệu
-hahah	ha ha
-nta	người ta
-ngèo	nghèo
-kêh	kênh
-ak	à
-ad	quản trị viên
-j	gì
-ny	người yêu
-dc	được
-qc	quảng cáo
-baoh	bao giờ
-zui	vui
-zẻ	vẻ
-tym	tim
-fb	facebook
-insta	instagram
-z	vậy
-thich	thích
-vcl	vô cùng lớn
-đt	điện thoại
-acc	account
-trc	trước
-qá	quá
-ntn	như thế nào
-wá	quá
-zậy	vậy
-zô	vô
-ytb	youtube
-xl	xin lỗi
-face	facebook
-hjhj	hi hi
-vv	vui vẻ
-ns	nói
-iu	yêu
-in4	info
-sub	subscribe
-kh	không
-zạ	vậy
-oy	rồi
-jo	giờ
-wa	quá
-hjx	hix
-e	em
-ik	ý
-ji	gì
-ce	chị em
-lm	làm
-sr	sorry
-ib	inbox
-hoy	thôi
-k	không
-vd	ví dụ
 a	anh
-cũng z	cũng vậy
-z là	vậy là
-fen	friend
-on lai	online
-kô	không
-hqua	hôm qua
-xog	xong
-nhoé	nhé
-biet	biết
-quí	quý
-stk	số tài khoản
-đươc	được
-nghành	ngành
-ngừoi	người
-trog	trong
-tgian	thời gian
-biêt	biết
-fải	phải
-nguời	người
-bth	bình thường
-khg	không
-nhưg	nhưng
-thằg	thằng
-đuợc	được
-thým	thím
-onl	online
-cmnd	chứng minh nhân dân
-sđt	số điện thoại
-klq	không liên quan
-ks	khách sạn
-note	chú ý
-chill	thư giãn dễ chịu
-kg	không
-hanoi	hà nội
-tphcm	thành phố hồ chí minh
-nhìu	nhiều
-ship	giao hàng
-tl	trả lời
-r	rồi
-trể	trễ
+acc	account
+ace	anh chị em
+ad	quản trị viên
+ae	anh em
+agile	mô hình agile
+ah	à
+ak	à
+apply	ứng tuyển
+atrai	anh trai
+ba	phân tích nghiệp vụ
+backlog	danh sách công việc tồn đọng
+baoh	bao giờ
+bbè	bạn bè
+be	backend
+benefit	phúc lợi
+benefits	phúc lợi
+bgái	bạn gái
 bh	bây giờ
-ms	mới
-nx	nhận xét
+biet	biết
+bik	biết
+biêt	biết
+bme	bố mẹ
+bn	bạn
+bnhiu	bao nhiêu
+bnhiêu	bao nhiêu
+bonus	tiền thưởng
+bsĩ	bác sĩ
+bth	bình thường
+bthường	bình thường
+btrai	bạn trai
+bug	lỗi phần mềm
+buôg	buông
+bìh	bình
+bóg	bóng
+bằg	bằng
+c	chị
+cbị	chuẩn bị
+cd	triển khai liên tục
+ce	chị em
+ceo	giám đốc điều hành
+cgai	con gái
+chill	thư giãn dễ chịu
+chk	chồng
+chta	chúng ta
+chug	chung
+chuện	chuyện
+chàg	chàng
+chúg	chúng
+chăg	chăng
+ci	tích hợp liên tục
+cj	chị
+ck	chồng
+cka	cha
+cmnd	chứng minh nhân dân
+cmt	comment
+cmày	chúng mày
+csong	cuộc sống
+csống	cuộc sống
+cta	chúng ta
+cto	giám đốc công nghệ
+ctr	chương trình
+ctrai	con trai
+ctraj	con trai
+ctrinh	chương trình
+ctrình	chương trình
+cty	công ty
+ctác	công tác
+cv	công việc
+cviec	công việc
+cx	cũng
+càg	càng
+cùg	cùng
+cđời	cuộc đời
+cũg	cũng
+cũng z	cũng vậy
+dc	được
+deadline	hạn chót
+demo	trình diễn sản phẩm
+deploy	triển khai
+dev	lập trình viên
+developer	lập trình viên
+dky	đăng ký
+dthương	dễ thương
+dz	đẹp trai
+dzậy	dậy
+dàh	dành
+dòg	dòng
+dừg	dừng
+e	em
+face	facebook
+fb	facebook
+fe	frontend
+feedback	phản hồi
+fen	friend
+fix	sửa lỗi
+fresher	nhân viên mới
+fullstack	lập trình viên fullstack
+fải	phải
+giốg	giống
+gđ	gia đình
+gđình	gia đình
+gắg	gắng
+hahah	ha ha
+haj	hai
+hajzz	hai
+hanoi	hà nội
 hd	hóa đơn
-sp	sản phẩm
+hic	hích
+hjhj	hi hi
+hjx	hix
+hkì	học kỳ
+hnay	hôm nay
+hok	không
+hoy	thôi
+hphúc	hạnh phúc
+hqua	hôm qua
+hr	nhân sự
+hsơ	hồ sơ
+htrc	hôm trước
+hybrid	làm việc kết hợp
+hìh	hình
+hìhì	hì hì
+hôg	không
+hđộng	hành động
+họk	học
+ib	inbox
+ik	ý
+in4	info
+insta	instagram
+insurance	bảo hiểm
+intern	thực tập sinh
+internship	thực tập
+iu	yêu
+j	gì
+jd	mô tả công việc
+ji	gì
+jo	giờ
+junior	nhân viên mới
+júp	giúp
+k	không
+kb	kết bạn
+kg	không
+kh	không
+khg	không
+khoảg	khoảng
+khôg	không
+kih	kinh
+klq	không liên quan
+ko	không
+kpi	chỉ tiêu hiệu suất
+kqua	kết quả
+ks	khách sạn
+ksao	không sao
+kte	kinh tế
+ktra	kiểm tra
+kêh	kênh
+kòn	còn
+kô	không
+kũg	cũng
+kảm	cảm
+kậu	cậu
+kủa	của
+layoff	sa thải
+lead	trưởng nhóm
+lgi	làm gì
+llac	liên lạc
+lm	làm
+lquan	liên quan
+lquen	làm quen
+ltinh	linh tinh
+lz	làm gì
+lzi	làm gì
+lòg	lòng
+lúk	lúc
+lạh	lạnh
+lặg	lặng
+meeting	họp
+mentor	người hướng dẫn
+mgr	quản lý
+micromanage	quản lý vi mô soi mói
+micromanagement	quản lý vi mô soi mói
+mih	mình
+mik	mình
+mjh	mình
+mk	mình
+mn	mọi người
+mng	mọi người
+mqh	mối quan hệ
+mr	yêu cầu gộp mã
+ms	mới
+mìnk	mình
+mớj	mới
+nch	nói chuyện
+ng	người
+ngag	ngang
+nghành	ngành
+ngke	nghe
+ngkhác	người khác
+ngta	người ta
+nguoi	người
+nguời	người
+ngyeu	người yêu
+ngàh	ngành
+ngèo	nghèo
+ngđo	người đó
+ngđó	người đó
+ngừoi	người
+nhaa	nha
+nhiềuuu	nhiều
+nhjeu	nhiều
+nhoé	nhé
+nhìu	nhiều
+nhưg	nhưng
+nhưq	nhưng
+nhữg	những
+nkư	như
+nkưng	nhưng
+note	chú ý
+ns	nói
+nta	người ta
+nthe	như thế
+nthê	như thế
+nthế	như thế
+ntn	như thế nào
+ntnày	như thế này
+nvay	như vậy
+nvậy	như vậy
+nx	nhận xét
+ny	người yêu
+nyc	người yêu cũ
+nyêu	người yêu
+nàg	nàng
+nèk	nè
+năg	năng
+nắg	nắng
+nặg	nặng
+offboard	nghỉ việc
+offer	đề nghị việc làm
+offshore	gia công nước ngoài
+oh	ồ
+okr	mục tiêu then chốt
+on lai	online
+onboard	bắt đầu làm việc
+onl	online
+onsite	làm việc tại trụ sở khách hàng
+ot	làm thêm giờ
+outsource	gia công phần mềm
+outsourcing	gia công phần mềm
+overtime	làm thêm giờ
+oy	rồi
+package	gói lương thưởng
+phog	phong
+phòg	phòng
+pm	quản lý dự án
+pn	bạn
+po	chủ sản phẩm
+pr	yêu cầu gộp mã
+probation	thử việc
+product	sản phẩm
+qa	đảm bảo chất lượng
+qc	kiểm thử chất lượng
+qhe	quan hệ
+qhệ	quan hệ
+qtam	quan tâm
+qtrọng	quan trọng
+quí	quý
+qà	quà
+qá	quá
+qả	quả
+r	rồi
+refactor	tái cấu trúc code
+release	phát hành
+remote	làm việc từ xa
+remote 100%	làm việc từ xa hoàn toàn
+resign	nghỉ việc
+retro	họp đánh giá sprint
+review	đánh giá
+riêg	riêng
+rì	gì
+răg	răng
+rằg	rằng
+rồii	rồi
+salary	mức lương
+scrum	mô hình scrum
+senior	chuyên viên cấp cao
+sg	sài gòn
+ship	giao hàng
 shiper	người giao hàng
+sm	scrum master
+snghĩ	suy nghĩ
+sp	sản phẩm
+sprint	giai đoạn phát triển
+sr	sorry
+stack	công nghệ
+standup	họp nhanh
+stk	số tài khoản
+sub	subscribe
+sviên	sinh viên
+sđt	số điện thoại
+sốg	sống
+task	công việc
+tcảm	tình cảm
+team lead	trưởng nhóm
+tech	công nghệ
+tech lead	trưởng nhóm kỹ thuật
+techlead	trưởng nhóm kỹ thuật
+tester	kiểm thử
+tgian	thời gian
+thgian	thời gian
+thich	thích
+thik	thích
+thjc	thích
+thjk	thích
+thoy	thôi
+thuơng	thương
+thàh	thành
+thíck	thích
+thík	thích
+thôii	thôi
+thým	thím
+thươg	thương
+thườg	thường
+thằg	thằng
+thẳg	thẳng
+thỳ	thì
+tiếg	tiếng
+tks	thanks
+tl	trả lời
+tlai	tương lai
+tnào	thế nào
+tphcm	thành phố hồ chí minh
+tq	trung quốc
+trag	trang
+trc	trước
+trieu	triệu
+trog	trong
+trể	trễ
+trọg	trọng
+tym	tim
+tyêu	tình yêu
+tìh	tình
+tíh	tính
+tưởg	tưởng
+tượg	tượng
+từg	từng
+uh	ừ
+uhm	ừm
+ui	giao diện người dùng
+ukm	ừm
+ux	trải nghiệm người dùng
+uốg	uống
+vc	vợ chồng
+vch	vãi chưởng
+vcl	vô cùng lớn
+vd	ví dụ
+vde	vấn đề
+vk	vợ
+vn	việt nam
+vs	với
+vv	vui vẻ
+vđê	vấn đề
+vọg	vọng
+wa	quá
+wfh	làm việc tại nhà
+wtâm	quan tâm
+wá	quá
+xg	xuống
+xih	xinh
+xink	xinh
+xl	xin lỗi
+xloi	xin lỗi
+xog	xong
+xuốg	xuống
+ytb	youtube
+z	vậy
+z là	vậy là
+zui	vui
+zà	gìa
+zám	dám
+zô	vô
+zùi	rồi
+zạ	vậy
+zậy	vậy
+zẻ	vẻ
+zồi	rồi
+àk	à
+đag	đang
+đc	được
+đhọc	đại học
+đii	đi
+đki	đăng ký
+đkiện	điều kiện
+đt	điện thoại
+đthoai	điện thoại
+đthoại	điện thoại
+đuợc	được
+đág	đáng
+đáh	đánh
+đóg	đóng
+đôg	đông
+đươc	được
+địh	định
+đồg	đồng
+độg	động
+đứg	đứng
+ơiii	ơi
+ạh	ạ

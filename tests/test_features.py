@@ -249,7 +249,9 @@ def test_model_can_train_and_predict_with_the_text_feature_width():
 
 def test_modeling_notebook_consumes_artifact_without_refitting_tfidf():
     notebook = json.loads(
-        (PROJECT_ROOT / "notebooks" / "03_sentiment_modeling_ml.ipynb").read_text()
+        (PROJECT_ROOT / "notebooks" / "03_sentiment_modeling_ml.ipynb").read_text(
+            encoding="utf-8"
+        )
     )
     source = "\n".join(
         "".join(cell.get("source", [])) for cell in notebook["cells"]

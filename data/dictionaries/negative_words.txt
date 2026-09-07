@@ -26,6 +26,9 @@ phúc lợi kém
 phúc lợi ít
 không có bảo hiểm
 thiếu bảo hiểm
+chế độ kém
+chế độ bảo hiểm kém
+chế độ đãi ngộ kém
 
 # --- QUẢN LÝ & LÃNH ĐẠO TIÊU CỰC ---
 sếp khó tính
@@ -136,6 +139,9 @@ tiêu cực
 tệ
 kém
 tồi
+rất tệ
+quá tệ
+cực tệ
 chán
 mất động lực
 không muốn làm nữa
@@ -144,6 +150,88 @@ không nên apply
 không recommend
 cần cải thiện nhiều
 nhiều thứ cần cải thiện
+
+# --- TÍNH TỪ & CỤM TỪ PHỦ ĐỊNH CỐT LÕI (CORE NEGATIVE UNIGRAMS & NEGATION PHRASES) ---
+áp lực
+bóc lột
+bèo
+bèo bọt
+chậm
+nợ
+nợ lương
+trễ
+trễ lương
+muộn
+gò bó
+hà khắc
+keo kiệt
+bất công
+lừa đảo
+phông bạt
+rườm rà
+lộn xộn
+thiếu chuyên nghiệp
+vô lý
+chèn ép
+không tốt
+chưa tốt
+chẳng tốt
+chả tốt
+không hề tốt
+không được tốt
+chưa được tốt
+không ổn
+chưa ổn
+chẳng ổn
+chả ổn
+không hề ổn
+không đẹp
+chưa đẹp
+không xịn
+không thích
+chẳng thích
+chả thích
+chưa hài lòng
+chẳng hài lòng
+không vui
+chưa vui
+không hay
+chưa hay
+không ngon
+không phù hợp
+chưa phù hợp
+không rõ ràng
+chưa rõ ràng
+không rõ
+chưa rõ
+không minh bạch
+chưa minh bạch
+không công bằng
+chưa công bằng
+không thuận tiện
+không chuyên nghiệp
+chưa chuyên nghiệp
+không thoải mái
+chưa thoải mái
+không thân thiện
+không linh hoạt
+không ổn định
+chưa ổn định
+không sạch sẽ
+không rộng rãi
+chưa cao
+không cao
+lương không cao
+lương chưa cao
+chưa xứng đáng
+chưa tương xứng
+chưa hợp lý
+không hợp lý
+chưa thỏa đáng
+không thỏa đáng
+ít cơ hội
+chả biết gì
+chả có gì
 
 # --- TỪ TIẾNG ANH PHỔ BIẾN TRONG CỘNG ĐỒNG IT (TIÊU CỰC) ---
 toxic culture
@@ -168,3 +256,80 @@ favoritism
 discrimination
 burnout
 unstable
+not good
+not nice
+not great
+slow
+poor
+bad
+
+# --- TỪ VỰNG BỔ SUNG ĐỒNG BỘ TỪ DỰ ÁN NLP ---
+dở
+ức chế
+bực
+bực mình
+mệt
+chưa có
+không có
+quịt lương
+cắt giảm
+sa thải
+đuổi việc
+ép buộc
+bắt ép
+ot nhiều
+làm thêm giờ nhiều
+quá tải
+overload
+thiếu quy trình
+đãi ngộ kém
+thưởng thấp
+sếp tồi
+sếp tệ
+quản lý yếu
+bất cập
+hạn chế
+bảo thủ
+drama
+lục đục
+chia rẽ
+đấu đá
+ma cũ bắt nạt ma mới
+hứa lèo
+bánh vẽ
+nói mồm
+thiệt thòi
+hẹp hòi
+khắt khe
+tù túng
+nhàm chán
+lãng phí
+rối rắm
+phức tạp
+cồng kềnh
+nóng
+hơi chật
+chật chội
+ồn ào
+bụi bặm
+xa xôi
+khó khăn
+cực
+khổ
+thấp
+nói xấu
+lừa
+chia bè phái
+mất thời gian
+khủng khiếp
+ít chia sẻ
+không chính xác
+quá gần
+te
+kem
+toi
+chan
+ap luc
+met moi
+that vong
+bat cong
