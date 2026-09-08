@@ -7,10 +7,12 @@ __pycache__/
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 .pytest_cache/
+.playwright-mcp/
 
 # Virtual environments
 venv/
 .venv/
+.venv311/
 env/
 
 # IDE files

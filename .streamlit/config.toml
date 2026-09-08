@@ -1,0 +1,44 @@
+# Dark developer-tool visual system for the ITviec sentiment dashboard.
+[theme]
+base = "dark"
+primaryColor = "#7AA7FF"
+backgroundColor = "#080B10"
+secondaryBackgroundColor = "#121720"
+codeBackgroundColor = "#0D121A"
+codeTextColor = "#DCE6F5"
+textColor = "#F1F5F9"
+linkColor = "#9AB9FF"
+borderColor = "#29313D"
+chartCategoricalColors = ["#50E3A4", "#F4D35E", "#FF6677", "#7AA7FF", "#FF994F", "#A78BFA"]
+violetColor = "#A78BFA"
+redColor = "#FF6677"
+greenColor = "#50E3A4"
+blueColor = "#7AA7FF"
+orangeColor = "#FF994F"
+yellowColor = "#F4D35E"
+dataframeBorderColor = "#29313D"
+dataframeHeaderBackgroundColor = "#141A24"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "15px"
+buttonRadius = "11px"
+font = "'DM Sans':https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+codeFontSize = "14px"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["38px", "28px", "22px", "18px", "16px", "14px"]
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+linkUnderline = false
+
+[theme.sidebar]
+backgroundColor = "#0C1017"
+secondaryBackgroundColor = "#141A24"
+codeBackgroundColor = "#0D121A"
+borderColor = "#29313D"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

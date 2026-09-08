@@ -1,7 +1,9 @@
 import re
 import os
 import unicodedata
-from typing import Dict, Set
+import pandas as pd
+import numpy as np
+from typing import List, Dict, Set, Tuple
 
 class TextPreprocessor:
     """
@@ -19,7 +21,7 @@ class TextPreprocessor:
         self.english_vnmese_dict = self._load_dict_from_file(os.path.join(dict_dir, 'english-vnmese.txt'))
         self.emoji_dict = self._load_dict_from_file(os.path.join(dict_dir, 'emojicon.txt'))
         self.emoji_dict = dict(sorted(self.emoji_dict.items(), key=lambda x: len(x[0]), reverse=True))
-        
+
         # Load lexicon cảm xúc
         self.positive_words = self._load_set_from_file(os.path.join(dict_dir, 'positive_words.txt'))
         self.negative_words = self._load_set_from_file(os.path.join(dict_dir, 'negative_words.txt'))
