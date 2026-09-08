@@ -112,3 +112,27 @@ assert "underthesea" not in sys.modules
     )
 
     assert result.returncode == 0, result.stderr
+
+
+def test_predict_review_hybrid_on_complex_negation():
+    """Kiểm tra câu phủ định ghép nhiều vế được nhận diện chính xác là Negative qua cơ chế Hybrid."""
+    from src.app_services import get_model_status, load_inference_bundle, predict_review
+    from src.preprocessing import TextPreprocessor
+
+    status = get_model_status()
+    if not status.ready:
+        pytest.skip("Model chưa sẵn sàng để test.")
+
+    model, extractor = load_inference_bundle(status)
+    preprocessor = TextPreprocessor()
+    text = "Môi trường làm việc không được thân thiện, đồng nghiệp không hỗ trợ và ít cơ hội học hỏi."
+
+    result = predict_review(text, model, extractor, preprocessor)
+
+    assert result.label == "Negative"
+    assert result.confidence is not None
+    assert result.confidence >= 0.5
+    assert result.decision_type in {"ml", "hybrid"}
+    assert result.probabilities is not None
+    assert result.probabilities["Negative"] > result.probabilities["Positive"]
+

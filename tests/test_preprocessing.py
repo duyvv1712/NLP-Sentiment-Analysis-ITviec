@@ -1,10 +1,16 @@
 import os
-import pytest
+import sys
 from pathlib import Path
-from src.preprocessing import TextPreprocessor
+import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.preprocessing import TextPreprocessor
+
 DICT_DIR = PROJECT_ROOT / "data" / "dictionaries"
+
 
 
 @pytest.fixture(scope="module")
@@ -118,3 +124,13 @@ def test_dataset_high_coverage(preprocessor):
             matched_count += 1
     coverage = matched_count / len(df)
     assert coverage >= 0.95, f"Độ bao phủ thực tế chỉ đạt {coverage * 100:.2f}%, yêu cầu >= 95%"
+
+
+def test_negation_scope_handling_complex_review(preprocessor):
+    """Kiểm tra câu phủ định phức tạp nhiều vế được nhận diện chính xác là tiêu cực."""
+    text = "Môi trường làm việc không được thân thiện, đồng nghiệp không hỗ trợ và ít cơ hội học hỏi."
+    res = preprocessor.calc_sentiment_features(text)
+    assert res["neg_w"] >= 2, f"Cần phát hiện ít nhất 2 cụm tiêu cực, thực tế: {res}"
+    assert res["pos_w"] == 0, f"Không được nhận nhầm từ tích cực sau phủ định, thực tế: {res}"
+    assert res["sentiment_ratio"] <= -0.8, f"Sentiment ratio phải tiêu cực rõ rệt, thực tế: {res['sentiment_ratio']}"
+

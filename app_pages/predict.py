@@ -118,15 +118,54 @@ if submitted:
             else:
                 label_vi = SENTIMENT_LABELS.get(prediction.label, prediction.label)
                 with result_slot.container(border=True):
-                    st.subheader(f"Kết quả: {label_vi}")
-                    if prediction.confidence is None:
-                        st.caption(
-                            "Model không cung cấp xác suất đã hiệu chỉnh, vì vậy app không hiển thị confidence."
-                        )
-                    else:
+                    header_col1, header_col2 = st.columns([2, 1], vertical_alignment="center")
+                    with header_col1:
+                        st.subheader(f"Kết quả: {label_vi}")
+                    with header_col2:
+                        if prediction.decision_type == "hybrid":
+                            st.badge("Hybrid NLP + Lexicon", icon=":material/auto_fix_high:", color="blue")
+                        else:
+                            st.badge("Mô hình Học máy", icon=":material/smart_toy:", color="green")
+
+                    if prediction.confidence is not None:
                         st.metric("Độ tin cậy", f"{prediction.confidence:.1%}", border=True)
-                    with st.expander("Xem văn bản sau tiền xử lý", icon=":material/code:"):
+                    else:
+                        st.caption("Model không cung cấp xác suất đã hiệu chỉnh.")
+
+                    if prediction.probabilities:
+                        st.markdown("**Phân bố xác suất 3 lớp cảm xúc**")
+                        p_cols = st.columns(3)
+                        p_order = [("Positive", "Tích cực", "green"), ("Neutral", "Trung tính", "orange"), ("Negative", "Tiêu cực", "red")]
+                        for (cls_name, cls_label, color), col in zip(p_order, p_cols):
+                            val = prediction.probabilities.get(cls_name, 0.0)
+                            with col:
+                                st.caption(f"{cls_label}: **{val:.1%}**")
+                                st.progress(min(max(val, 0.0), 1.0))
+
+                    if prediction.explanation:
+                        st.info(prediction.explanation, icon=":material/info:")
+
+                    with st.expander("Chi tiết bóc tách ngôn ngữ (Explainable AI)", icon=":material/insights:"):
+                        st.markdown("**Văn bản sau tiền xử lý:**")
                         st.code(prediction.processed_text, language=None)
+
+                        if prediction.lexicon_stats:
+                            pos_phrases = prediction.lexicon_stats.get("pos_phrases", [])
+                            neg_phrases = prediction.lexicon_stats.get("neg_phrases", [])
+                            lex_c1, lex_c2 = st.columns(2)
+                            with lex_c1:
+                                st.markdown(f"**Từ/cụm tích cực ({len(pos_phrases)}):**")
+                                if pos_phrases:
+                                    st.write(", ".join(f"`{p}`" for p in pos_phrases))
+                                else:
+                                    st.caption("Không có")
+                            with lex_c2:
+                                st.markdown(f"**Từ/cụm tiêu cực / phủ định ({len(neg_phrases)}):**")
+                                if neg_phrases:
+                                    st.write(", ".join(f"`{p}`" for p in neg_phrases))
+                                else:
+                                    st.caption("Không có")
+
 
 st.subheader("Pipeline suy luận")
 with st.container(horizontal=True):

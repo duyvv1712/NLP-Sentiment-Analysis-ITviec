@@ -189,10 +189,18 @@ class TextPreprocessor:
         tokens = clean_text.split()
         n_tokens = len(tokens)
 
-        # 3. Quét cụm từ tham lam (Greedy Longest Matching):
-        # Ưu tiên khớp cụm dài nhất trước để giải quyết triệt để vấn đề phủ định (vd: "không toxic" vs "toxic")
+        # 3. Quét cụm từ tham lam (Greedy Longest Matching) kết hợp xử lý phạm vi phủ định (Negation Scope):
+        # - Ưu tiên cụm tiêu cực dài nhất
+        # - Nếu gặp từ tích cực nhưng có tiền tố phủ định đi trước (vd: "không được thân thiện"), tự động đảo chiều sang tiêu cực
+        NEGATION_WORDS = {
+            'không', 'chưa', 'chẳng', 'chả', 'ít', 'thiếu', 'kém', 'hạn chế',
+            'không hề', 'chưa hề', 'không được', 'chưa được', 'không có'
+        }
+
         pos_w = 0
         neg_w = 0
+        matched_pos = []
+        matched_neg = []
         i = 0
         max_k = self.max_phrase_len
 
@@ -200,16 +208,37 @@ class TextPreprocessor:
             matched = False
             for k in range(min(max_k, n_tokens - i), 0, -1):
                 phrase = " ".join(tokens[i : i + k])
-                if phrase in self.positive_words:
-                    pos_w += 1
-                    i += k
-                    matched = True
-                    break
-                elif phrase in self.negative_words:
+                if phrase in self.negative_words:
                     neg_w += 1
+                    matched_neg.append(phrase)
                     i += k
                     matched = True
                     break
+                elif phrase in self.positive_words:
+                    # Kiểm tra xem ngay trước cụm từ tích cực có từ/cụm phủ định không (khoảng cách 1-2 từ)
+                    is_negated = False
+                    neg_prefix = ''
+                    if i > 0 and tokens[i - 1] in NEGATION_WORDS:
+                        is_negated = True
+                        neg_prefix = tokens[i - 1]
+                    elif i > 1 and f"{tokens[i - 2]} {tokens[i - 1]}" in NEGATION_WORDS:
+                        is_negated = True
+                        neg_prefix = f"{tokens[i - 2]} {tokens[i - 1]}"
+                    elif i > 1 and tokens[i - 2] in NEGATION_WORDS and tokens[i - 1] in {'được', 'hề', 'quá', 'rất', 'thực sự'}:
+                        is_negated = True
+                        neg_prefix = f"{tokens[i - 2]} {tokens[i - 1]}"
+
+                    if is_negated:
+                        neg_w += 1
+                        matched_neg.append(f"{neg_prefix} {phrase}")
+                    else:
+                        pos_w += 1
+                        matched_pos.append(phrase)
+
+                    i += k
+                    matched = True
+                    break
+
             if not matched:
                 i += 1
 
@@ -229,8 +258,11 @@ class TextPreprocessor:
             'pos_e': pos_e,
             'neg_e': neg_e,
             'total_we': total_we,
-            'sentiment_ratio': round(sentiment_ratio, 4)
+            'sentiment_ratio': round(sentiment_ratio, 4),
+            'pos_phrases': matched_pos,
+            'neg_phrases': matched_neg
         }
+
 
     @staticmethod
     def map_sentiment_label(rating: int) -> str:
