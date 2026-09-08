@@ -89,8 +89,8 @@ Dữ liệu bao phủ **180 công ty** trong giai đoạn 07/2016 đến 05/2025
 
 ### Chẩn đoán chất lượng nhãn yếu và từ điển cảm xúc
 
-- Từ điển cảm xúc ở phiên bản đối sánh theo từ đơn chỉ có ít nhất một hit trên **12,26%** review. Sau khi chuyển sang thuật toán đối sánh cụm từ dài nhất (Greedy Longest Phrase Matching) và mở rộng từ điển, độ bao phủ đạt **99,54%**, với `total_we` trung bình tăng từ 0,16 lên 6,06 và `pos_w` tăng từ 0,08 lên 4,78.
-- `pos_e` và `neg_e` bằng 0 trên toàn bộ 8.417 dòng ở cả hai phiên bản từ điển. Hai đặc trưng emoji do đó là hằng số và không mang thông tin phân biệt.
+- Từ điển cảm xúc ở phiên bản đối sánh theo từ đơn chỉ có ít nhất một hit trên **12,26%** review. Sau khi chuyển sang thuật toán đối sánh cụm từ dài nhất (Greedy Longest Phrase Matching) và mở rộng từ điển, độ bao phủ đạt **99,75%**, với `total_we` trung bình tăng từ 0,16 lên 6,74 và `pos_w` tăng từ 0,08 lên 5,31.
+- `pos_e` và `neg_e` từng bằng 0 trên toàn bộ 8.417 dòng ở các phiên bản từ điển trước. Sau khi khâu đếm emoji được sửa, hai đặc trưng này đã nhận giá trị khác 0, nhưng chỉ trên **20 review (0,24%)**, gồm 19 dòng có emoji tích cực và 1 dòng có emoji tiêu cực. Đóng góp thực tế của chúng vào mô hình do đó vẫn không đáng kể.
 - Trường `Recommend?` bất đồng với nhãn yếu ở một tỷ lệ đáng kể: 41 review Negative vẫn được khuyến nghị, trong khi 411 review Neutral và 87 review Positive không được khuyến nghị.
 - Những dấu hiệu trên không chứng minh nhãn yếu sai, nhưng cho thấy `Rating` không thể được mô tả như ground truth tuyệt đối.
 
@@ -137,9 +137,9 @@ Năm nhóm đặc trưng được so sánh trên cùng bộ fold, cùng seed và
 | Nhóm đặc trưng | Macro F1 | Neutral F1 | Recall Negative | Negative F1 | Accuracy |
 |---|---:|---:|---:|---:|---:|
 | Text-only | 0,5579 | 0,4456 | 0,4563 | 0,3894 | 0,7158 |
-| Text + lexicon | 0,5658 | 0,4508 | 0,4824 | 0,4049 | 0,7204 |
+| Text + lexicon | 0,5664 | 0,4578 | 0,4803 | 0,3999 | 0,7211 |
 | Text + aspect | 0,7369 | 0,6441 | 0,6952 | 0,6485 | 0,8373 |
-| **Text + lexicon + aspect** | **0,7389** | **0,6448** | 0,6995 | **0,6526** | **0,8389** |
+| **Text + lexicon + aspect** | **0,7433** | **0,6497** | 0,7061 | **0,6606** | **0,8409** |
 | Aspect ratings only | 0,7388 | 0,6353 | **0,7676** | 0,6649 | 0,8337 |
 
 ![Ablation nhóm đặc trưng trên tập phát triển](figures/eda_feature_ablation_cv.png)
@@ -154,30 +154,30 @@ Chênh lệch trung bình giữa các nhóm đặc trưng không đủ để k�
 
 | So với Text-only | Macro F1 delta | Số fold cải thiện | Delta nhỏ nhất |
 |---|---:|---:|---:|
-| Text + lexicon | +0,0079 | 3/5 | −0,0021 |
+| Text + lexicon | +0,0084 | 4/5 | −0,0038 |
 | Text + aspect | +0,1789 | 5/5 | +0,1635 |
-| Text + lexicon + aspect | +0,1809 | 5/5 | +0,1631 |
+| Text + lexicon + aspect | +0,1853 | 5/5 | +0,1647 |
 | Aspect ratings only | +0,1808 | 5/5 | +0,1640 |
 
 ### Kết quả đối với đặc trưng từ điển cảm xúc
 
-Việc nâng độ bao phủ từ điển đảo chiều đóng góp của nhóm đặc trưng này. Ở phiên bản đối sánh từ đơn, cấu hình Text + lexicon đạt 0,5556 Macro F1, thấp hơn Text-only. Ở phiên bản đối sánh cụm từ, cấu hình này đạt 0,5658, cao hơn Text-only.
+Việc nâng độ bao phủ từ điển đảo chiều đóng góp của nhóm đặc trưng này. Ở phiên bản đối sánh từ đơn, cấu hình Text + lexicon đạt 0,5556 Macro F1, thấp hơn Text-only. Ở phiên bản đối sánh cụm từ, cấu hình này đạt 0,5664, cao hơn Text-only.
 
-Mức cải thiện tuy dương nhưng chỉ đạt +0,0079 Macro F1 và chỉ xuất hiện ở 3 trên 5 fold, với fold xấu nhất giảm 0,0021. Biên độ này nằm trong dao động giữa các fold, nên chưa đủ bằng chứng thống kê để khẳng định đặc trưng từ điển cải thiện mô hình khi đứng một mình. Việc khẳng định mức tăng này đòi hỏi lặp lại cross-validation với nhiều seed khác nhau.
+Mức cải thiện tuy dương nhưng chỉ đạt +0,0084 Macro F1 và xuất hiện ở 4 trên 5 fold, với fold xấu nhất giảm 0,0038. Biên độ này vẫn nằm trong dao động giữa các fold, nên chưa đủ bằng chứng thống kê để khẳng định chắc chắn khi đặc trưng từ điển đứng một mình, dù bằng chứng đã mạnh hơn phiên bản từ điển trước (khi đó chỉ cải thiện ở 3 trên 5 fold). Việc khẳng định mức tăng này đòi hỏi lặp lại cross-validation với nhiều seed khác nhau.
 
-Ở mức đặc trưng đơn lẻ, `sentiment_ratio` sau khi cập nhật đã phân tách ba lớp theo đúng thứ tự kỳ vọng, với giá trị trung bình 0,090 ở lớp Negative, 0,428 ở lớp Neutral và 0,679 ở lớp Positive. Ở phiên bản trước, đặc trưng này gần như phẳng giữa ba lớp.
+Ở mức đặc trưng đơn lẻ, `sentiment_ratio` sau khi cập nhật đã phân tách ba lớp theo đúng thứ tự kỳ vọng, với giá trị trung bình 0,063 ở lớp Negative, 0,429 ở lớp Neutral và 0,677 ở lớp Positive. Ở phiên bản trước, đặc trưng này gần như phẳng giữa ba lớp.
 
 ### Kết quả đối với điểm khía cạnh
 
 Việc bổ sung năm điểm khía cạnh cải thiện cả ba chỉ số quan tâm và cải thiện ở toàn bộ 5 trên 5 fold:
 
-- Neutral F1 tăng từ 0,4456 lên 0,6448, tương ứng +0,1992.
-- Recall lớp Negative tăng từ 0,4563 lên 0,6995, tương ứng +0,2432.
-- Macro F1 tăng từ 0,5579 lên 0,7389, tương ứng +0,1809.
+- Neutral F1 tăng từ 0,4456 lên 0,6497, tương ứng +0,2041.
+- Recall lớp Negative tăng từ 0,4563 lên 0,7061, tương ứng +0,2498.
+- Macro F1 tăng từ 0,5579 lên 0,7433, tương ứng +0,1853.
 
-Cấu hình Text + lexicon + aspect đạt giá trị cao nhất ở Macro F1, Neutral F1, Negative F1 và Accuracy, nên được chọn làm cấu hình đặc trưng đầy đủ. Một quan sát đáng chú ý là cấu hình Aspect ratings only đạt Recall Negative cao nhất (0,7676) nhưng Neutral F1 lại thấp hơn cấu hình có văn bản (0,6353 so với 0,6448). Điều này cho thấy biểu diễn văn bản vẫn đóng góp thông tin riêng cho việc phân tách lớp Neutral, và mô hình đầy đủ không đơn thuần đọc lại thang điểm khía cạnh.
+Cấu hình Text + lexicon + aspect đạt giá trị cao nhất ở Macro F1, Neutral F1, Negative F1 và Accuracy, nên được chọn làm cấu hình đặc trưng đầy đủ. Một quan sát đáng chú ý là cấu hình Aspect ratings only đạt Recall Negative cao nhất (0,7676) nhưng Neutral F1 lại thấp hơn cấu hình có văn bản (0,6353 so với 0,6497). Điều này cho thấy biểu diễn văn bản vẫn đóng góp thông tin riêng cho việc phân tách lớp Neutral, và mô hình đầy đủ không đơn thuần đọc lại thang điểm khía cạnh.
 
-Năm cột khía cạnh không có giá trị khuyết thiếu trên toàn bộ dữ liệu, nên bước thay thế giá trị khuyết bằng 0 trong `FeatureExtractor._prepare_numeric` không kích hoạt và không tạo ra giá trị nằm ngoài thang 1 đến 5. Hai cột `pos_e` và `neg_e` là hằng số 0 như đã nêu ở mục chẩn đoán, nên trong 10 cột số của cấu hình đầy đủ chỉ có 8 cột thực sự mang thông tin.
+Năm cột khía cạnh không có giá trị khuyết thiếu trên toàn bộ dữ liệu, nên bước thay thế giá trị khuyết bằng 0 trong `FeatureExtractor._prepare_numeric` không kích hoạt và không tạo ra giá trị nằm ngoài thang 1 đến 5. Hai cột `pos_e` và `neg_e` chỉ khác 0 trên 20 review như đã nêu ở mục chẩn đoán, nên trong 10 cột số của cấu hình đầy đủ chỉ có 8 cột đóng góp đáng kể.
 
 ### Giới hạn của cấu hình chứa điểm khía cạnh
 

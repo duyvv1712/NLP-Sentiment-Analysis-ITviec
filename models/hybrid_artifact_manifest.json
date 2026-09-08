@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "git_sha": "aaaeb3232aa08e454e857b6612d1170c1ae5aef1",
+  "git_sha": "6642a7a04a3e4d32c90b0878f027fee60203e9bb",
   "git_branch": "feature/aspect-hybrid-features",
   "data_file": "data/processed/reviews_cleaned.xlsx",
-  "data_sha256": "5067cd21f5d7f3b3222c977e6d9bbd6def793f2da00ed4c8fa667531e6c2dbe6",
+  "data_sha256": "1a911dcb30d0108332bdd767f6d96fd3adbcc87ded6e65ed8d00766f761dbf42",
   "source_rows": 8417,
   "modeling_rows": 8413,
   "train_rows": 6730,
@@ -44,12 +44,12 @@
   },
   "artifacts": {
     "hybrid_feature_extractor.joblib": {
-      "sha256": "d0e5e3d6feecf834688a12655e03d1ca426996c08a0a57e2324e76c064a11294",
+      "sha256": "af477e3f495342badeaf297e422984749060ecb2fb0dbb2fdef8752f1e8b8abe",
       "bytes": 217908
     },
     "hybrid_train_test_features.joblib": {
-      "sha256": "5be9ef99b584110d692101ffc51cc9f681886aa07d208c38465a98784e141acc",
-      "bytes": 4762476
+      "sha256": "f471d228ab6927edc53355ffbce0b38077a6f3c0d77236dbb73d5bef8bcce762",
+      "bytes": 4767356
     }
   }
 }
