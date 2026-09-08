@@ -225,8 +225,23 @@ def load_inference_bundle(status: ModelStatus) -> tuple[Any, FeatureExtractor]:
     from src.features import FeatureExtractor
 
     model = joblib.load(status.model_path)
+
+    # Tương thích ngược: bổ sung multi_class cho LogisticRegression khi unpickle từ scikit-learn mới
+    for est in getattr(model, "estimators_", []):
+        if hasattr(est, "C") and not hasattr(est, "multi_class"):
+            setattr(est, "multi_class", "auto")
+    named = getattr(model, "named_estimators_", {})
+    if isinstance(named, dict):
+        for est in named.values():
+            if hasattr(est, "C") and not hasattr(est, "multi_class"):
+                setattr(est, "multi_class", "auto")
+    final_est = getattr(model, "final_estimator_", None)
+    if final_est is not None and hasattr(final_est, "C") and not hasattr(final_est, "multi_class"):
+        setattr(final_est, "multi_class", "auto")
+
     extractor = FeatureExtractor.load_bundle(status.extractor_path)
     return model, extractor
+
 
 
 def predict_review(

@@ -112,8 +112,9 @@ if submitted:
                 prediction = predict_review(
                     review_text, model, extractor, preprocessor
                 )
-            except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            except (AttributeError, OSError, RuntimeError, TypeError, ValueError, Exception) as exc:
                 result_slot.error(f"Không thể thực hiện dự đoán: {exc}", icon=":material/error:")
+
             else:
                 label_vi = SENTIMENT_LABELS.get(prediction.label, prediction.label)
                 with result_slot.container(border=True):

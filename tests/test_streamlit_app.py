@@ -1,12 +1,19 @@
 from pathlib import Path
-import tomllib
+import sys
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import toml as tomllib
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from streamlit.testing.v1 import AppTest
 
 from src.app_services import get_model_status
 
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_theme_config_locks_the_app_to_developer_dark_mode():
