@@ -32,8 +32,8 @@ def load_evidence(signature):
 
 
 page_header(
-    "BẰNG CHỨNG THỰC NGHIỆM", "Mô hình tốt đến đâu?",
-    "Đi từ số liệu tổng thể đến từng lỗi dự đoán. Hiểu được đánh đổi cũng là một phần của hiểu mô hình.",
+    "CHẤT LƯỢNG MÔ HÌNH", "Mô hình hoạt động tốt đến đâu?",
+    "Theo dõi hiệu năng tổng thể, các kiểu nhầm lẫn và tác động khi thay đổi ngưỡng cảm xúc.",
 )
 try:
     sources = [
@@ -45,18 +45,16 @@ try:
     sources.append(PROJECT_ROOT / "models" / "best_sentiment_model.joblib")
     signature = tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in sources)
     snapshot, comparison, sensitivity, errors, model_matches = load_evidence(signature)
-except (OSError, ValueError, KeyError) as exc:
-    st.warning("Chưa có đủ kết quả thực nghiệm. Chạy notebook 06 để tạo bộ dữ liệu evaluation.")
-    st.caption(str(exc))
+except (OSError, ValueError, KeyError):
+    st.warning("Dữ liệu đánh giá chưa sẵn sàng. Vui lòng kiểm tra lại bộ tài nguyên của ứng dụng.")
     st.stop()
 
 baseline, policy = comparison.iloc[0], comparison.iloc[1]
 with st.container(horizontal=True, gap="small"):
-    st.badge("Stacking · bộ test đã khóa", color="blue", icon=":material/science:")
+    st.badge("Stacking · tập đánh giá cố định", color="blue", icon=":material/verified:")
     st.badge(f"{snapshot['test_count']:,} mẫu", color="gray")
-    st.badge("Kết quả từ notebook 06", color="gray", icon=":material/book:")
 if not model_matches or not np.isclose(snapshot["threshold"], NEGATIVE_THRESHOLD):
-    st.warning("Model hoặc policy hiện tại khác bản đã đánh giá. Các số liệu dưới đây thuộc snapshot notebook 06.")
+    st.warning("Mô hình hoặc ngưỡng hiện tại khác phiên bản đã tạo bộ chỉ số này.")
 
 with st.container(horizontal=True, key="evaluation_metrics", gap="small"):
     for title, column, fmt in [
@@ -66,16 +64,16 @@ with st.container(horizontal=True, key="evaluation_metrics", gap="small"):
         change = float(policy[column] - baseline[column])
         st.metric(title, format(policy[column], fmt),
                   delta=f"{change:+.4f}" if fmt == ".4f" else f"{change * 100:+.2f} điểm %",
-                  border=True, help="Policy 30%, thay đổi so với dự đoán mặc định của model.")
-st.caption("Số liệu trên là policy 30% so với baseline. Đây là phân tích bổ sung trên final test đã được xem trước, chưa phải xác nhận độc lập cho ngưỡng mới.")
+                  border=True, help="Ngưỡng 30%, thay đổi so với cách chọn nhãn mặc định.")
+st.caption("Các chỉ số thể hiện tác động của ngưỡng 30% so với cách chọn nhãn mặc định trên cùng tập đánh giá.")
 
 with st.container(key="evaluation_chart_row"):
     matrix_col, tradeoff_col = st.columns([1.1, 1], gap="medium")
 with matrix_col.container(border=True, height="stretch", key="evaluation_matrix"):
     st.caption("01 / MA TRẬN NHẦM LẪN")
     st.subheader("Model thường nhầm ở đâu?")
-    mode = st.segmented_control("Kết quả hiển thị", ["Baseline", "Ngưỡng 30%"], default="Ngưỡng 30%", key="matrix_mode")
-    matrix = np.asarray(snapshot["baseline_matrix"] if mode == "Baseline" else snapshot["policy_matrix"])
+    mode = st.segmented_control("Kết quả hiển thị", ["Mặc định", "Ngưỡng 30%"], default="Ngưỡng 30%", key="matrix_mode")
+    matrix = np.asarray(snapshot["baseline_matrix"] if mode == "Mặc định" else snapshot["policy_matrix"])
     labels = snapshot["labels"]
     rows = [
         {"actual": SENTIMENT_LABELS[a], "predicted": SENTIMENT_LABELS[b],
@@ -133,7 +131,7 @@ with st.container(border=True, key="evaluation_sensitivity"):
         strokeDash=[4, 4], color="#cdd8e8").encode(x="Threshold:Q")
     st.altair_chart(style_chart((lines + marker).properties(height=240)), width="stretch", theme=None)
     st.caption(f"Ngưỡng {threshold:.0%} · Recall {selected['Negative Recall']:.2%} · Precision {selected['Negative Precision']:.2%} · Macro F1 {selected['Macro F1']:.4f}")
-    st.caption("Chỉ khám phá số liệu đã xuất; thao tác này không thay đổi policy Web Demo. Chọn ngưỡng chính thức cần validation/OOF riêng.")
+    st.caption("Thanh trượt chỉ dùng để quan sát số liệu; ngưỡng đang vận hành của hệ thống không thay đổi.")
 
 with st.container(border=True, key="evaluation_errors"):
     st.caption("04 / ERROR ANALYSIS")
@@ -151,11 +149,5 @@ with st.container(border=True, key="evaluation_errors"):
         st.badge(f"P(Tiêu cực): {row['P(Negative)']:.1%}", color="gray")
     with st.container(height=190, border=True):
         st.text(row["raw_review_text"])
-    st.caption(f"Tín hiệu gợi ý để đọc lỗi: {row['Nhóm tín hiệu']}. Đây là heuristic, chưa phải nguyên nhân đã được kiểm chứng.")
-    st.caption("15 ví dụ được chọn để thảo luận lỗi, không đại diện cho tần suất lỗi toàn bộ test. Review có nhiều chủ đề; nhãn từ rating có thể khác sắc thái văn bản.")
-
-with st.expander("Nguồn kết quả và cách tái lập", icon=":material/verified:"):
-    st.write("Nguồn: notebook 06, feature split đã khóa và các CSV trong reports/evaluation/.")
-    st.code(".venv311/Scripts/jupyter nbconvert --to notebook --execute --inplace notebooks/06_model_evaluation_error_analysis.ipynb", language="text", wrap_lines=True)
-    st.caption(f"SHA-256 model được đánh giá: {snapshot['model_sha256']}")
-    st.caption("Đánh giá dùng X_test đã lưu; demo nhập review chạy preprocessing hiện tại. Hai đường vào cần được kiểm chứng tương đương trước khi khẳng định metric trên test áp dụng trực tiếp cho mọi input web.")
+    st.caption(f"Tín hiệu tham khảo: {row['Nhóm tín hiệu']}. Review có thể chứa nhiều chủ đề và sắc thái khác với nhãn suy ra từ rating.")
+    st.caption("Các ví dụ giúp minh họa kiểu nhầm lẫn; tỷ lệ tổng thể được thể hiện trong ma trận phía trên.")

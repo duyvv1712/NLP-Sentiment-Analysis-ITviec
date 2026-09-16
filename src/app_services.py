@@ -265,10 +265,10 @@ def get_model_status(project_root: str | Path = PROJECT_ROOT) -> ModelStatus:
             False,
             model_path,
             extractor_path,
-            "Thiếu bộ trích xuất đặc trưng text-only.",
+            "Bộ xử lý văn bản của mô hình chưa sẵn sàng.",
         )
     if not manifest_path.exists():
-        return ModelStatus(False, model_path, extractor_path, "Thiếu artifact manifest.")
+        return ModelStatus(False, model_path, extractor_path, "Thông tin cấu hình mô hình chưa sẵn sàng.")
 
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -281,14 +281,14 @@ def get_model_status(project_root: str | Path = PROJECT_ROOT) -> ModelStatus:
             False,
             model_path,
             extractor_path,
-            "Artifact không tuân theo feature contract text-only.",
+            "Cấu hình mô hình không tương thích với chế độ Text-only.",
         )
     if model_path is None:
         return ModelStatus(
             False,
             None,
             extractor_path,
-            "Mô hình đang chờ TV3 huấn luyện và bàn giao.",
+            "Mô hình phân tích cảm xúc chưa sẵn sàng.",
         )
 
     return ModelStatus(True, model_path, extractor_path, "Pipeline dự đoán sẵn sàng.")
@@ -364,7 +364,7 @@ def predict_review(
     final_label = policy_label
     decision_type = "threshold" if threshold_applied else "ml"
     explanation = (
-        f"Policy ưu tiên Negative vì P(Negative) đạt {negative_probability:.1%}, "
+        f"Hệ thống ưu tiên nhãn Tiêu cực vì xác suất đạt {negative_probability:.1%}, "
         f"cao hơn hoặc bằng ngưỡng {NEGATIVE_THRESHOLD:.0%}."
         if threshold_applied
         else f"Dự đoán dựa trên mô hình học máy ({SENTIMENT_LABELS.get(raw_label, raw_label)})."
@@ -480,14 +480,14 @@ def get_lexicon_model_status(project_root: str | Path = PROJECT_ROOT) -> Lexicon
             False,
             None,
             extractor_path,
-            "Thiếu text_lexicon_feature_extractor.joblib. Chạy scripts/build_text_lexicon_artifacts.py.",
+            "Bộ xử lý Text + Lexicon chưa sẵn sàng.",
         )
     if not manifest_path.exists():
         return LexiconModelStatus(
             False,
             None,
             extractor_path,
-            "Thiếu text_lexicon_artifact_manifest.json.",
+            "Thông tin cấu hình Text + Lexicon chưa sẵn sàng.",
         )
 
     try:
@@ -501,14 +501,14 @@ def get_lexicon_model_status(project_root: str | Path = PROJECT_ROOT) -> Lexicon
             False,
             None,
             extractor_path,
-            f"Artifact không tuân theo feature contract text_plus_lexicon (thực tế: {feature_mode}).",
+            "Cấu hình mô hình không tương thích với chế độ Text + Lexicon.",
         )
     if not model_path.exists():
         return LexiconModelStatus(
             False,
             None,
             extractor_path,
-            "Thiếu best_text_lexicon_model.joblib. Chạy scripts/build_text_lexicon_artifacts.py.",
+            "Mô hình Text + Lexicon chưa sẵn sàng.",
         )
 
     return LexiconModelStatus(
@@ -602,7 +602,7 @@ def predict_review_lexicon(
     final_label = policy_label
     decision_type = "threshold" if threshold_applied else "ml"
     explanation = (
-        f"Policy ưu tiên Negative vì P(Negative) đạt {negative_probability:.1%}, "
+        f"Hệ thống ưu tiên nhãn Tiêu cực vì xác suất đạt {negative_probability:.1%}, "
         f"cao hơn hoặc bằng ngưỡng {NEGATIVE_THRESHOLD:.0%}."
         if threshold_applied
         else f"Dự đoán dựa trên mô hình Text + Lexicon ({SENTIMENT_LABELS.get(raw_label, raw_label)})."
