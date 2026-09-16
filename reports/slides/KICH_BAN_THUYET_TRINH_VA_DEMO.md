@@ -4,7 +4,7 @@
 
 - **Người 1 — Thuyết trình:** trình bày liên tục toàn bộ slide 1–15, sau đó bàn giao một lần cho người demo.
 - **Người 2 — Phạm Thành Trung:** phụ trách toàn bộ phần demo ứng dụng Streamlit và kết thúc buổi trình bày.
-- **Thời lượng mục tiêu:** khoảng **17 phút**; có thể rút xuống 15 phút theo phương án ở cuối tài liệu.
+- **Thời lượng mục tiêu:** khoảng **17 phút 05 giây**; có thể rút xuống 15 phút theo phương án ở cuối tài liệu.
 
 Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng dụng hiện tại tại `http://localhost:8502`.
 
@@ -14,13 +14,15 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
 |---|---|---:|
 | Slide 1–3: Bài toán và kiến trúc | Người 1 | 2 phút 15 giây |
 | Slide 4–6: Tiền xử lý, EDA và đặc trưng | Người 1 | 3 phút |
-| Slide 7–10: Mô hình và đánh giá | Người 1 | 4 phút |
+| Slide 7–10: Mô hình và đánh giá | Người 1 | 4 phút 35 giây |
 | Slide 11–12: Insight và giới thiệu ứng dụng | Người 1 | 1 phút 20 giây |
-| Slide 13–15: Minh bạch, hạn chế và kết luận | Người 1 | 2 phút 15 giây |
+| Slide 13–15: Minh bạch, hạn chế và kết luận | Người 1 | 2 phút 05 giây |
 | Demo trực tiếp và kết thúc | Phạm Thành Trung | 3 phút 50 giây |
-| **Tổng** | **Cả hai** | **Khoảng 16 phút 40 giây** |
+| **Tổng** | **Cả hai** | **Khoảng 17 phút 05 giây** |
 
 ## 3. Nội dung cần đồng bộ trên slide trước khi trình bày
+
+Các mục dưới đây là lỗi của **file PowerPoint**, không phải lời thoại. Nên sửa trước khi quay hoặc trình bày để nội dung nhìn thấy trên màn hình không mâu thuẫn với người nói.
 
 1. Slide 1, 3 và 14 đang ghi **43/43 unit test**; project hiện tại đã đạt **55 tests passed**.
 2. Slide 3 ghi điều khiển bằng radio; ứng dụng hiện dùng **segmented control**.
@@ -30,7 +32,10 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
    - Phân tích review
    - Mô hình & đánh giá
 4. Slide 13 không nên khẳng định TF-IDF là mức đóng góp nhân quả. Nên nói đây là **các đặc trưng TF-IDF nổi bật trong đầu vào**; hệ thống chưa triển khai SHAP hoặc LIME.
-5. Artifact hiện tại cho Text + Lexicon đạt xấp xỉ **Macro F1 0,5664** và **Recall Negative 48,0%** trên cross-validation. Nếu chưa sửa slide 6, khi nói chỉ nên làm tròn là **0,566** và **khoảng 48%**.
+5. Slide 6 đang dùng số cũ. Artifact hiện tại cho Text + Lexicon đạt **Macro F1 0,5664** và **Recall Negative 48,0%** trên cross-validation; Text + Lexicon + Aspect đạt **0,7433**. Khi nói có thể làm tròn lần lượt thành **0,566**, **khoảng 48%** và **0,743**.
+6. Chú thích dưới ba biểu đồ ở slide 5 đang chạm mép và bị cắt chữ; cần nâng chú thích lên hoặc giảm cỡ chữ trước khi xuất bản trình chiếu.
+7. Slide 10 nên đổi cụm “bóc tách 3 cụm từ XAI” thành **“phát hiện 3 cụm phủ định”** để không đánh đồng luật Lexicon với phương pháp giải thích mô hình như SHAP/LIME.
+8. Slide 15 đang ghi “Phần hỏi đáp” trong khi kịch bản còn phần demo. Nên đổi thành **“Chuyển sang demo trực tiếp”**; phần hỏi đáp chỉ bắt đầu sau khi Trung kết thúc demo.
 
 ---
 
@@ -58,7 +63,7 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
 
 **Thời gian:** 45 giây
 
-> Hệ thống gồm sáu bước. Review được thu thập và làm sạch, sau đó chuyển thành vector TF-IDF kết hợp đặc trưng Lexicon. Vector được đưa vào các mô hình học máy và Stacking Ensemble. Kết quả xác suất tiếp tục đi qua bước hiệu chỉnh quyết định trước khi trả về nhãn cuối trên ứng dụng Streamlit.
+> Hệ thống gồm sáu bước. Review được thu thập và làm sạch, sau đó chuyển thành vector TF-IDF; ở cấu hình mở rộng, vector này được ghép thêm năm đặc trưng Lexicon. Đầu vào được đưa vào các mô hình học máy và Stacking Ensemble. Kết quả xác suất tiếp tục đi qua bước hiệu chỉnh quyết định trước khi trả về nhãn cuối trên ứng dụng Streamlit.
 >
 > Nhóm tách riêng dữ liệu huấn luyện, cross-validation và tập đánh giá; đồng thời sử dụng hai pipeline tiền xử lý khác nhau cho Machine Learning truyền thống và Transformer.
 
@@ -98,7 +103,7 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
 >
 > Stacking sử dụng ba mô hình nền là Naive Bayes, Logistic Regression và Linear SVM. Dự đoán của chúng được đưa vào Logistic Regression tầng trên để học cách kết hợp.
 >
-> Kết quả Stacking đạt CV Macro F1 0,5619 và Accuracy khoảng 77,66% trên tập đánh giá.
+> Kết quả Stacking đạt CV Macro F1 0,5619 trên tập phát triển và Accuracy khoảng 77,66% trên Final Test đã khóa.
 
 ## Slide 8 — ViSoBERT
 
