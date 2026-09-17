@@ -283,8 +283,8 @@ def img_card(slide, path, x, y, w, h, caption=None, pad=0.14):
     py = y + Inches(pad) + (avail_h - pic_h)/2
     slide.shapes.add_picture(path, px, py, width=pic_w, height=pic_h)
     if caption:
-        simple_text(slide, x + Inches(pad), y + h - Inches(0.32), w - Inches(pad*2), Inches(0.28),
-                    caption, 10.5, RGBColor(0x33,0x3A,0x44), align=PP_ALIGN.CENTER)
+        simple_text(slide, x + Inches(pad), y + h - Inches(0.44), w - Inches(pad*2), Inches(0.38),
+                    caption, 9.5, RGBColor(0x33,0x3A,0x44), align=PP_ALIGN.CENTER, line_spacing=1.05)
     return card
 
 def pipeline_box(slide, x, y, w, h, label, sub, color=BLUE):
@@ -415,7 +415,7 @@ for m in members:
 stat_chip(s1, Inches(9.15), info_y, Inches(1.55), card_h/2 - Inches(0.05), "8.417", "review", BLUE)
 stat_chip(s1, Inches(10.85), info_y, Inches(1.55), card_h/2 - Inches(0.05), "7", "mô hình", GREEN)
 stat_chip(s1, Inches(9.15), info_y+card_h/2+Inches(0.1), Inches(1.55), card_h/2 - Inches(0.05), "0.5619", "CV Macro F1", YELLOW)
-stat_chip(s1, Inches(10.85), info_y+card_h/2+Inches(0.1), Inches(1.55), card_h/2 - Inches(0.05), "43/43", "unit test", ORANGE)
+stat_chip(s1, Inches(10.85), info_y+card_h/2+Inches(0.1), Inches(1.55), card_h/2 - Inches(0.05), "55/55", "test passed", ORANGE)
 
 # =====================================================================
 # SLIDE 2 — ĐẶT VẤN ĐỀ & THÁCH THỨC DỮ LIỆU
@@ -473,13 +473,13 @@ for i, (label, sub, c) in enumerate(stages):
         x += arrow_w
 
 simple_text(s3, MARGIN, top+Inches(0.05), Inches(12.2), Inches(0.5),
-            "Toàn bộ pipeline được đóng gói dạng module tái sử dụng, kiểm chứng bằng 43/43 unit test — bảo đảm nhất quán giữa notebook nghiên cứu và ứng dụng Web.",
+            "Toàn bộ pipeline được đóng gói dạng module tái sử dụng, kiểm chứng bằng 55 bài kiểm thử (test passed) — bảo đảm nhất quán giữa notebook nghiên cứu và ứng dụng Web.",
             13, TXT_SUB, line_spacing=1.1)
 
 feat_y = by + box_h + Inches(0.45)
 feats = [("Tách biệt Train/CV/Final-Test", "Final test chỉ mở khoá đúng 1 lần, chống rò rỉ dữ liệu."),
          ("2 pipeline tiền xử lý song song", "clean_advance_text (ML) vs clean_text_for_transformer (DL)."),
-         ("Song song 2 mô hình trên UI", "Radio chọn Text-only (5.000) hoặc Text+Lexicon (5.005) chiều.")]
+         ("Song song 2 mô hình trên UI", "Segmented control chọn Text-only (5.000) hoặc Text+Lexicon (5.005) chiều.")]
 fw = Inches(3.95)
 for i, (t, d) in enumerate(feats):
     fx = MARGIN + i*(fw+Inches(0.19))
@@ -579,7 +579,7 @@ simple_text(s6, rx+Inches(0.2), top+Inches(1.82), rw-Inches(0.4), Inches(1.3),
 warn = add_rect(s6, rx, top+Inches(3.35), rw, Inches(1.4), CARD2, line=RED, radius=0.08)
 simple_text(s6, rx+Inches(0.2), top+Inches(3.5), rw-Inches(0.4), Inches(0.3), "⚠ VÌ SAO LOẠI BỎ ASPECT RATINGS?", 10.8, RED, bold=True)
 simple_text(s6, rx+Inches(0.2), top+Inches(3.82), rw-Inches(0.4), Inches(0.9),
-            "Dù Text+Aspect đạt Macro F1 0.7369, đặc trưng này gần trùng nhãn mục tiêu → rủi ro Data Shortcut, không phản ánh khả năng hiểu ngôn ngữ thật của mô hình.",
+            "Dù Text+Aspect đạt Macro F1 0.7433, đặc trưng này gần trùng nhãn mục tiêu → rủi ro Data Shortcut, không phản ánh khả năng hiểu ngôn ngữ thật của mô hình.",
             10.8, TXT_SUB, line_spacing=1.15)
 
 # =====================================================================
@@ -711,7 +711,7 @@ add_text(s10, MARGIN+Inches(0.42), cy+Inches(0.14), Inches(5.15), Inches(0.9),
          line_spacing=1.2)
 cy += Inches(1.35)
 for label, val, c in [("Không có Hybrid Gate", "Dự đoán sai → Trung tính / Tích cực", RED),
-                       ("Có Hybrid Decision Gate", "Tiêu cực (71.1%) — bóc tách 3 cụm từ XAI", GREEN)]:
+                       ("Có Hybrid Decision Gate", "Tiêu cực (71.1%) — phát hiện 3 cụm phủ định", GREEN)]:
     add_rect(s10, MARGIN+Inches(0.22), cy, Inches(0.08), Inches(0.55), c)
     simple_text(s10, MARGIN+Inches(0.42), cy, Inches(5.2), Inches(0.28), label, 12, TXT, bold=True)
     simple_text(s10, MARGIN+Inches(0.42), cy+Inches(0.29), Inches(5.2), Inches(0.28), val, 11, TXT_SUB)
@@ -768,17 +768,17 @@ mock_x, mock_y = MARGIN, top
 mock_w, mock_h = Inches(7.6), Inches(4.75)
 mock = add_rect(s12, mock_x, mock_y, mock_w, mock_h, RGBColor(0x0C,0x11,0x19), line=STROKE, radius=0.03)
 # top tab bar
-tab_labels = ["Tổng quan", "Khám phá dữ liệu", "Company Insights", "Dự đoán Realtime"]
+tab_labels = ["Tổng quan", "Insight doanh nghiệp", "Phân tích review", "Mô hình & đánh giá"]
 tab_colors = [BLUE, GREEN, YELLOW, ORANGE]
 tw = mock_w/4
 for i, (lab, c) in enumerate(zip(tab_labels, tab_colors)):
     tx = mock_x + i*tw
-    active = (i == 3)
+    active = (i == 2)
     tab = add_rect(s12, tx+Inches(0.05), mock_y+Inches(0.12), tw-Inches(0.1), Inches(0.5),
                     CARD2 if active else None, radius=0.25)
     if active:
         add_rect(s12, tx+Inches(0.05), mock_y+Inches(0.56), tw-Inches(0.1), Pt(2.2), c)
-    simple_text(s12, tx, mock_y+Inches(0.24), tw, Inches(0.3), lab, 10.5,
+    simple_text(s12, tx, mock_y+Inches(0.24), tw, Inches(0.3), lab, 10,
                 TXT if active else TXT_DIM, bold=active, align=PP_ALIGN.CENTER)
 # body: fake input + prediction result card
 body_y = mock_y+Inches(0.85)
@@ -792,19 +792,26 @@ simple_text(s12, mock_x+Inches(0.5), res_y+Inches(0.12), Inches(3), Inches(0.3),
 simple_text(s12, mock_x+Inches(0.5), res_y+Inches(0.42), Inches(3), Inches(0.6), "TIÊU CỰC", 22, RED, bold=True)
 simple_text(s12, mock_x+mock_w-Inches(2.6), res_y+Inches(0.12), Inches(2.1), Inches(0.9), "71.1%", 30, TXT, bold=True, align=PP_ALIGN.RIGHT)
 simple_text(s12, mock_x+mock_w-Inches(2.6), res_y+Inches(0.82), Inches(2.1), Inches(0.28), "độ tin cậy", 10, TXT_DIM, align=PP_ALIGN.RIGHT)
-# model switch chip
+# model switch segmented control mockup
 sw_y = res_y+Inches(1.3)
-add_rect(s12, mock_x+Inches(0.3), sw_y, mock_w-Inches(0.6), Inches(0.55), CARD, line=STROKE, radius=0.3)
-simple_text(s12, mock_x+Inches(0.5), sw_y+Inches(0.13), mock_w-Inches(1.0), Inches(0.3),
-            "○ Mô hình 1: Text-only (5.000)      ● Mô hình 2: Text + Lexicon (5.005)", 10.5, TXT_SUB)
+add_rect(s12, mock_x+Inches(0.3), sw_y, mock_w-Inches(0.6), Inches(0.55), CARD, line=STROKE, radius=0.1)
+seg_w = (mock_w - Inches(0.7)) / 2
+# left segment (inactive)
+add_rect(s12, mock_x+Inches(0.35), sw_y+Inches(0.06), seg_w, Inches(0.43), CARD2, radius=0.08)
+simple_text(s12, mock_x+Inches(0.35), sw_y+Inches(0.13), seg_w, Inches(0.3),
+            "Text-only · 5.000 chiều", 9.5, TXT_DIM, align=PP_ALIGN.CENTER)
+# right segment (active)
+add_rect(s12, mock_x+Inches(0.35)+seg_w, sw_y+Inches(0.06), seg_w, Inches(0.43), BLUE_D, radius=0.08)
+simple_text(s12, mock_x+Inches(0.35)+seg_w, sw_y+Inches(0.13), seg_w, Inches(0.3),
+            "Text + Lexicon · 5.005 chiều", 9.5, WHITE, bold=True, align=PP_ALIGN.CENTER)
 
 rx = mock_x+mock_w+Inches(0.25)
-section_card(s12, rx, top, Inches(4.5), Inches(4.75), "4 phân hệ chức năng", BLUE)
+section_card(s12, rx, top, Inches(4.5), Inches(4.75), "4 trang chức năng trên ứng dụng", BLUE)
 ry = top+Inches(0.62)
-for lab, desc, c in [("Tổng quan dự án", "Giới thiệu pipeline, số liệu tổng hợp toàn hệ thống.", BLUE),
-                      ("Khám phá dữ liệu", "EDA tương tác: phân bố nhãn, độ dài văn bản, khía cạnh.", GREEN),
-                      ("Phân tích doanh nghiệp", "WordCloud & thống kê cảm xúc theo từng công ty IT.", YELLOW),
-                      ("Dự đoán thời gian thực", "Nhập review, chọn mô hình, xem kết quả kèm giải thích XAI.", ORANGE)]:
+for lab, desc, c in [("Tổng quan", "Giới thiệu pipeline, KPI dữ liệu & phân bố cảm xúc toàn hệ thống.", BLUE),
+                      ("Insight doanh nghiệp", "WordCloud & thống kê cảm xúc theo từng công ty IT.", GREEN),
+                      ("Phân tích review", "Nhập review, chọn mô hình, xem kết quả kèm giải thích XAI & hiệu chỉnh.", YELLOW),
+                      ("Mô hình & đánh giá", "Leaderboard 5 mô hình, ma trận nhầm lẫn & phân tích độ nhạy ngưỡng 30%.", ORANGE)]:
     add_rect(s12, rx+Inches(0.22), ry, Inches(0.08), Inches(0.85), c)
     simple_text(s12, rx+Inches(0.42), ry, Inches(3.7), Inches(0.28), lab, 12, TXT, bold=True)
     simple_text(s12, rx+Inches(0.42), ry+Inches(0.3), Inches(3.7), Inches(0.5), desc, 10.3, TXT_SUB, line_spacing=1.1)
@@ -837,13 +844,13 @@ for w, val, c in words:
     wy += Inches(0.46)
 add_rect(s13, zero_x, top+Inches(0.65), Pt(1.2), wy-top-Inches(0.65), STROKE)
 simple_text(s13, MARGIN+Inches(0.25), wy+Inches(0.15), Inches(5.5), Inches(0.6),
-            "Mỗi thanh thể hiện mức đóng góp của từ/cụm từ vào quyết định cuối cùng — âm (đỏ) kéo về Tiêu cực, dương (xanh) kéo về Tích cực.",
-            10.8, TXT_SUB, line_spacing=1.15)
+            "Mỗi thanh thể hiện trọng số TF-IDF nổi bật của từ/cụm từ trong đầu vào — âm (đỏ) nghiêng về Tiêu cực, dương (xanh) nghiêng về Tích cực (chưa triển khai SHAP/LIME).",
+            10.5, TXT_SUB, line_spacing=1.15)
 
 section_card(s13, Inches(6.9), top, Inches(5.85), Inches(4.75), "Vì sao cần XAI trong bài toán này?", BLUE)
 xy = top+Inches(0.65)
 for lead, rest, c in [("Minh bạch quyết định: ", "người dùng (ứng viên, HR) hiểu vì sao một review bị gán Tiêu cực/Tích cực.", BLUE),
-                       ("Bóc tách 3 cụm từ ảnh hưởng nhất: ", "hiển thị trực tiếp trên UI mỗi lần dự đoán realtime.", GREEN),
+                       ("Bóc tách 3 cụm từ phủ định: ", "hiển thị trực tiếp trên UI mỗi lần dự đoán realtime.", GREEN),
                        ("Kiểm chứng Negation Scope: ", "XAI cho thấy rõ cụm phủ định đã đảo cực tính đúng theo kỳ vọng.", YELLOW),
                        ("Hỗ trợ debug mô hình: ", "phát hiện các từ khoá gây nhiễu, phục vụ cải tiến pipeline sau này.", ORANGE)]:
     dot = s13.shapes.add_shape(MSO_SHAPE.OVAL, Inches(6.9)+Inches(0.24), xy+Inches(0.06), Inches(0.09), Inches(0.09))
@@ -864,7 +871,7 @@ cols = [
         "Pipeline tiền xử lý tiếng Việt chuyên sâu, Negation Scope Detection, Greedy Matching 99.75%.",
         "Stacking Ensemble đạt CV Macro F1 0.5619, benchmark chéo với ViSoBERT trên GPU.",
         "Ablation Study khoa học: Text+Lexicon vượt Text-only, có kiểm soát Data Shortcut.",
-        "Web App Streamlit realtime tích hợp XAI, 43/43 unit test pass.",
+        "Web App Streamlit realtime tích hợp XAI, 55 bài kiểm thử passed.",
     ]),
     ("BÀI HỌC KINH NGHIỆM", YELLOW, [
         "Mất cân bằng dữ liệu cần xử lý ở cả tầng đặc trưng và tầng đánh giá (Macro F1, không chỉ Accuracy).",
@@ -912,9 +919,9 @@ simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(1.5), Inches(4.25), Inches
             "Nhóm 4 xin chân thành cảm ơn Thầy Đặng Văn Thìn đã tận tình hướng dẫn, cùng Hội đồng đánh giá đã dành thời gian theo dõi phần trình bày của nhóm.",
             12.5, TXT_SUB, line_spacing=1.25)
 add_rect(s15, Inches(7.75)+Inches(0.3), top+Inches(2.85), Inches(4.25), Pt(1), STROKE)
-simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(3.05), Inches(4.25), Inches(0.4), "NHÓM 4 SẴN SÀNG BƯỚC VÀO", 11, TXT_DIM, bold=True)
-simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(3.42), Inches(4.25), Inches(0.8), "PHẦN HỎI ĐÁP (Q&A)", 24, TXT, bold=True)
-simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(4.15), Inches(4.25), Inches(0.4), "Trân trọng cảm ơn!", 13, GREEN, bold=True)
+simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(3.05), Inches(4.25), Inches(0.4), "TIẾP THEO BƯỚC VÀO", 11, TXT_DIM, bold=True)
+simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(3.42), Inches(4.25), Inches(0.7), "DEMO TRỰC TIẾP", 22, TXT, bold=True)
+simple_text(s15, Inches(7.75)+Inches(0.3), top+Inches(4.15), Inches(4.25), Inches(0.4), "Phạm Thành Trung trình bày", 13, GREEN, bold=True)
 
 # =====================================================================
 os.makedirs(OUT_PATH.parent, exist_ok=True)

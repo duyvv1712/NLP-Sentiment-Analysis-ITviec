@@ -20,22 +20,23 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
 | Demo trực tiếp và kết thúc | Phạm Thành Trung | 3 phút 50 giây |
 | **Tổng** | **Cả hai** | **Khoảng 17 phút 05 giây** |
 
-## 3. Nội dung cần đồng bộ trên slide trước khi trình bày
+## 3. Nội dung cần đồng bộ trên slide trước khi trình bày (Đã hoàn tất đồng bộ)
 
-Các mục dưới đây là lỗi của **file PowerPoint**, không phải lời thoại. Nên sửa trước khi quay hoặc trình bày để nội dung nhìn thấy trên màn hình không mâu thuẫn với người nói.
+Các mục dưới đây đã được sửa trực tiếp trong `scripts/build_presentation_slides.py` và biên dịch lại vào file `reports/slides/NLP_ITviec_Sentiment_Slides.pptx`, bảo đảm nội dung trên màn hình khớp hoàn toàn với kịch bản và ứng dụng thực tế:
 
-1. Slide 1, 3 và 14 đang ghi **43/43 unit test**; project hiện tại đã đạt **55 tests passed**.
-2. Slide 3 ghi điều khiển bằng radio; ứng dụng hiện dùng **segmented control**.
-3. Slide 12 mô tả 4 phân hệ và ảnh UI cũ; ứng dụng hiện có 4 trang:
+1. [x] **Slide 1, 3 và 14:** Đã cập nhật thành **55/55 test passed** (55 bài kiểm thử) khớp với kết quả kiểm thử thực tế.
+2. [x] **Slide 3:** Đã cập nhật thành **Segmented control** chọn 2 mô hình (thay cho radio).
+3. [x] **Slide 12:** Đã đồng bộ cấu trúc 4 trang chính xác của ứng dụng Streamlit:
    - Tổng quan
    - Insight doanh nghiệp
    - Phân tích review
    - Mô hình & đánh giá
-4. Slide 13 không nên khẳng định TF-IDF là mức đóng góp nhân quả. Nên nói đây là **các đặc trưng TF-IDF nổi bật trong đầu vào**; hệ thống chưa triển khai SHAP hoặc LIME.
-5. Slide 6 đang dùng số cũ. Artifact hiện tại cho Text + Lexicon đạt **Macro F1 0,5664** và **Recall Negative 48,0%** trên cross-validation; Text + Lexicon + Aspect đạt **0,7433**. Khi nói có thể làm tròn lần lượt thành **0,566**, **khoảng 48%** và **0,743**.
-6. Chú thích dưới ba biểu đồ ở slide 5 đang chạm mép và bị cắt chữ; cần nâng chú thích lên hoặc giảm cỡ chữ trước khi xuất bản trình chiếu.
-7. Slide 10 nên đổi cụm “bóc tách 3 cụm từ XAI” thành **“phát hiện 3 cụm phủ định”** để không đánh đồng luật Lexicon với phương pháp giải thích mô hình như SHAP/LIME.
-8. Slide 15 đang ghi “Phần hỏi đáp” trong khi kịch bản còn phần demo. Nên đổi thành **“Chuyển sang demo trực tiếp”**; phần hỏi đáp chỉ bắt đầu sau khi Trung kết thúc demo.
+   (Đồng thời mockup giao diện đã đổi sang dạng Segmented control).
+4. [x] **Slide 13:** Đã điều chỉnh câu chữ, xác định rõ là **trọng số TF-IDF nổi bật trong đầu vào** và ghi chú minh bạch là hệ thống chưa triển khai SHAP/LIME để tránh ngộ nhận về mặt XAI nhân quả.
+5. [x] **Slide 6:** Đã cập nhật số liệu chuẩn: Text + Lexicon + Aspect đạt **Macro F1 0,7433** (thay cho 0,7369 cũ).
+6. [x] **Slide 5:** Đã điều chỉnh layout và cỡ chữ chú thích dưới 3 biểu đồ EDA, bảo đảm không bị tràn mép hay cắt lẹm dòng thứ hai.
+7. [x] **Slide 10:** Đã đổi cụm từ thành **“phát hiện 3 cụm phủ định”** để phản ánh đúng bản chất kỹ thuật Negation Scope & Lexicon.
+8. [x] **Slide 15:** Khung bên phải đã đổi thành **“TIẾP THEO BƯỚC VÀO: DEMO TRỰC TIẾP — Phạm Thành Trung trình bày”**, tạo điểm chuyển tiếp mượt mà sang phần demo ứng dụng trước khi hội đồng hỏi đáp.
 
 ---
 
@@ -45,11 +46,9 @@ Các mục dưới đây là lỗi của **file PowerPoint**, không phải lờ
 
 **Thời gian:** 35 giây
 
-> Em xin chào thầy và các bạn. Nhóm 4 xin trình bày đồ án phân tích cảm xúc đánh giá nhân viên ngành Công nghệ Thông tin trên ITviec.
+> Em xin chào thầy và các bạn. Nhóm em xin trình bày đồ án phân tích cảm xúc đánh giá nhân viên ngành Công nghệ Thông tin trên ITviec.
 >
 > Mục tiêu của nhóm không chỉ là phân loại review thành Tích cực, Trung tính và Tiêu cực, mà còn xây dựng một pipeline NLP hoàn chỉnh, so sánh nhiều mô hình và đưa kết quả vào một ứng dụng có thể sử dụng trực tiếp. Dữ liệu của nhóm gồm 8.417 review và hệ thống hiện đã vượt qua 55 bài kiểm thử.
-
-**Lưu ý:** Không cần đọc lại toàn bộ tên và vai trò thành viên trên slide.
 
 ## Slide 2 — Bối cảnh và thách thức
 

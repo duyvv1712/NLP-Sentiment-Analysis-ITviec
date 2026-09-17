@@ -26,6 +26,9 @@ env/
 
 .ua/
 
+# Agent / IDE assistants
+.agents/
+
 # macOS
 .DS_Store
 **/.DS_Store
