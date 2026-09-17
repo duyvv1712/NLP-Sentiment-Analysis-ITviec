@@ -20,12 +20,11 @@ from src.app_services import (
 )
 from src.app_theme import page_header, style_chart
 
-# Illustrative inputs, not an evaluation dataset. Retain a difficult case openly.
 EXAMPLES = {
     "Lời khen": "Môi trường làm việc thân thiện, đồng nghiệp hỗ trợ và có nhiều cơ hội học hỏi.",
     "Ý kiến hỗn hợp": "Công việc ổn, phúc lợi bình thường nhưng quy trình còn khá chậm.",
     "Lời phàn nàn": "Công ty rất tệ, quản lý yếu kém, lương thấp, thường xuyên bắt nhân viên OT không lương.",
-    "Ca khó": "Thường xuyên OT, quản lý thiếu minh bạch và lương chưa tương xứng.",
+    "Cần lưu ý": "Thường xuyên OT, quản lý thiếu minh bạch và lương chưa tương xứng.",
 }
 COLORS = {"Positive": "green", "Neutral": "yellow", "Negative": "red"}
 MODEL_TEXT = "Text-only · 5.000 chiều"
@@ -78,10 +77,92 @@ def invalidate_result():
     st.session_state.pop("analysis_request", None)
 
 
+def render_pipeline_trace(cards: list[tuple[str, str, str, str, str]]) -> None:
+    """Render six inference steps as three presentation-friendly stages."""
+    stages = (
+        (
+            "text",
+            "01",
+            ":material/text_fields:",
+            "Hiểu văn bản",
+            "Từ review thô đến chuỗi token sạch",
+            cards[:2],
+        ),
+        (
+            "inference",
+            "02",
+            ":material/hub:",
+            "Biểu diễn & dự đoán",
+            "Biến token thành vector rồi tính xác suất",
+            cards[2:4],
+        ),
+        (
+            "decision",
+            "03",
+            ":material/check_circle:",
+            "Ra quyết định",
+            "Áp dụng quy tắc và trả nhãn cuối",
+            cards[4:],
+        ),
+    )
+
+    with st.container(horizontal=True, key="pipeline_stages", gap="small"):
+        for stage_key, stage_number, icon, stage_title, stage_detail, stage_cards in stages:
+            with st.container(
+                border=True,
+                height="content",
+                key=f"pipeline_stage_{stage_key}",
+            ):
+                st.caption(f"GIAI ĐOẠN {stage_number}")
+                st.markdown(f"### {icon} {stage_title}")
+                st.caption(stage_detail)
+                for key, step, title, value, detail in stage_cards:
+                    with st.container(key=f"pipeline_step_{key}", height="content", gap="xsmall"):
+                        st.caption(f"{step} / {title.upper()}")
+                        st.markdown(f"**{value}**")
+                        st.caption(detail)
+
+
+def prediction_trace(original: str, model_name: str, prediction, elapsed: float):
+    """Build presentation labels from the actual output of this inference run."""
+    tokens = prediction.processed_text.split()
+    top_terms = [term for term, _ in prediction.top_features[:3]]
+    baseline_label = prediction.baseline_label or prediction.raw_ml_label or prediction.label
+    baseline_vi = SENTIMENT_LABELS.get(baseline_label, baseline_label)
+    baseline_probabilities = prediction.raw_ml_probabilities or dict(prediction.class_probabilities)
+    baseline_score = baseline_probabilities.get(baseline_label)
+    baseline_detail = (
+        f"P({baseline_vi}) = {baseline_score:.1%} trước hiệu chỉnh."
+        if baseline_score is not None
+        else "Nhãn ban đầu trước bước hiệu chỉnh."
+    )
+
+    if prediction.decision_type == "hybrid":
+        gate_value = "Hybrid Lexicon"
+        gate_detail = f"Điều chỉnh {baseline_vi} → {SENTIMENT_LABELS.get(prediction.label, prediction.label)}."
+    elif prediction.threshold_applied:
+        gate_value = f"Threshold {NEGATIVE_THRESHOLD:.0%}"
+        gate_detail = f"P(Tiêu cực) = {prediction.negative_probability:.1%}; quy tắc đổi nhãn."
+    else:
+        gate_value = "Không đổi nhãn"
+        gate_detail = "Giữ nguyên dự đoán mặc định của Stacking."
+
+    final_label = SENTIMENT_LABELS.get(prediction.label, prediction.label)
+    confidence = f" · {prediction.confidence:.1%}" if prediction.confidence is not None else ""
+    return [
+        ("input", "01", "Review gốc", f"{len(original.strip()):,} ký tự", "Nội dung người dùng vừa cung cấp."),
+        ("clean", "02", "Chuẩn hóa", f"{len(tokens):,} token", f"Mẫu: {', '.join(tokens[:4]) or 'không có token'}"),
+        ("vector", "03", "Vector TF-IDF", f"{prediction.active_features:,} / {prediction.feature_count:,}", f"Top: {', '.join(top_terms) or 'không có đặc trưng'}"),
+        ("model", "04", "Stacking model", baseline_vi, baseline_detail),
+        ("gate", "05", "Hiệu chỉnh", gate_value, gate_detail),
+        ("output", "06", "Nhãn cuối", f"{final_label}{confidence}", f"Hoàn tất trong {elapsed:.2f} giây · {model_name}"),
+    ]
+
+
 st.session_state.setdefault("review_input", "")
 page_header(
-    "PHÒNG THỬ NGHIỆM NLP", "Từ lời viết đến cảm xúc",
-    "Thử một review, xem cách mô hình đọc văn bản và khám phá điều gì nằm sau mỗi dự đoán.",
+    "PHÂN TÍCH CẢM XÚC", "Từ lời viết đến cảm xúc",
+    "Nhập một review để nhận diện cảm xúc và theo dõi cách hệ thống đi đến kết quả.",
 )
 status = get_model_status()
 lexicon_status = get_lexicon_model_status()
@@ -92,7 +173,7 @@ selected_model = st.segmented_control(
     key="model_selector",
     on_change=invalidate_result,
     width="stretch",
-    help="Text + Lexicon là hướng ablation bổ sung 5 đặc trưng từ điển vào vector TF-IDF.",
+    help="Text + Lexicon bổ sung 5 tín hiệu từ điển cảm xúc vào vector TF-IDF.",
 )
 use_lexicon_model = selected_model == MODEL_LEXICON
 active_status = lexicon_status if use_lexicon_model else status
@@ -118,9 +199,6 @@ with editor.container(border=True, height="stretch", key="review_editor"):
     st.button("Phân tích cảm xúc", type="primary", icon=":material/arrow_forward:",
               on_click=request_analysis, width="stretch", key="analyze_review")
     st.caption("Chỉ dùng nội dung văn bản · Không cần rating hoặc tên công ty")
-    if st.session_state.get("review_example") == "Ca khó" and review_text == EXAMPLES["Ca khó"]:
-        st.caption(":material/science: Ca khó được giữ lại để khám phá giới hạn của mô hình. Các ví dụ không thay thế kết quả đánh giá trên test.")
-
 with result.container(border=True, height="stretch", key="prediction_result"):
     st.caption("02 / KẾT QUẢ PHÂN TÍCH")
     if "analysis_request" in st.session_state:
@@ -165,7 +243,7 @@ with result.container(border=True, height="stretch", key="prediction_result"):
             if prediction.decision_type == "hybrid":
                 st.badge("Hybrid NLP + Lexicon", color="violet", icon=":material/auto_fix_high:")
             elif prediction.decision_type == "threshold":
-                st.badge("Policy threshold", color="blue", icon=":material/tune:")
+                st.badge("Hiệu chỉnh ngưỡng", color="blue", icon=":material/tune:")
         for sentiment in SENTIMENT_ORDER:
             score = dict(prediction.class_probabilities).get(sentiment)
             if score is not None:
@@ -184,7 +262,7 @@ with result.container(border=True, height="stretch", key="prediction_result"):
             st.caption("Nhãn cuối trùng với dự đoán mặc định của model.")
         if prediction.explanation:
             st.info(prediction.explanation, icon=":material/info:")
-        st.caption(f"{elapsed:.2f} giây · Thời gian xử lý lượt này, gồm tải model nếu chưa có cache")
+        st.caption(f"Hoàn tất trong {elapsed:.2f} giây")
         if prediction.active_features == 0:
             st.warning("Văn bản không khớp từ điển TF-IDF. Kết quả này thiếu bằng chứng từ nội dung.")
     else:
@@ -202,6 +280,11 @@ with st.container(border=True, key="nlp_evidence"):
     st.subheader("Mô hình đã đọc review như thế nào?")
     if saved:
         original, model_name, prediction, elapsed = saved
+        with st.container(horizontal=True, key="pipeline_trace_status", gap="small"):
+            st.badge("6/6 bước hoàn tất", color="green", icon=":material/check_circle:")
+            st.badge(model_name, color="blue", icon=":material/account_tree:")
+        render_pipeline_trace(prediction_trace(original, model_name, prediction, elapsed))
+        st.caption("Các giá trị được lấy trực tiếp từ lượt phân tích hiện tại; bước hiệu chỉnh được tách riêng khỏi dự đoán Stacking.")
         with st.container(horizontal=True, key="nlp_metrics", gap="small"):
             st.metric("Token sau xử lý", len(prediction.processed_text.split()))
             st.metric("Đặc trưng có giá trị", prediction.active_features)
@@ -233,18 +316,16 @@ with st.container(border=True, key="nlp_evidence"):
                     f"tiêu cực/phủ định: {', '.join(negative_phrases[:4]) or 'không có'}"
                 )
             st.caption("Các số phần trăm là đầu ra của model, không phải cam kết độ chính xác cho từng review. Nhãn học từ rating có thể khác sắc thái thực tế của văn bản.")
-            st.page_link("app_pages/evaluation.py", label="Xem thực nghiệm và các trường hợp dự đoán sai", icon=":material/arrow_forward:")
+            st.page_link("app_pages/benchmark.py", label="Xem mô hình và đánh giá chi tiết", icon=":material/arrow_forward:")
     else:
-        with st.container(horizontal=True, key="pipeline_steps", gap="small"):
-            for title, description in [
-                ("01 · Chuẩn hóa", "Unicode, emoji, teencode và từ ghép tiếng Việt."),
-                ("02 · TF-IDF", "Biến văn bản thành vector theo từ điển đã học."),
-                ("03 · Stacking", "Kết hợp các bộ phân loại để tính xác suất."),
-                ("04 · Chọn nhãn", "Áp dụng policy ưu tiên phát hiện tiêu cực."),
-            ]:
-                with st.container(border=True):
-                    st.markdown(f"**{title}**")
-                    st.caption(description)
+        render_pipeline_trace([
+            ("input", "01", "Review gốc", "Nhận văn bản", "Chỉ cần nội dung review; không dùng rating."),
+            ("clean", "02", "Chuẩn hóa", "Làm sạch tiếng Việt", "Unicode, emoji, teencode, từ ghép và stopword."),
+            ("vector", "03", "Vector TF-IDF", "Biểu diễn đặc trưng", "Ánh xạ văn bản theo từ điển đã học."),
+            ("model", "04", "Stacking model", "Tính xác suất", "Kết hợp các bộ phân loại đã khóa."),
+            ("gate", "05", "Hiệu chỉnh", "Kiểm tra kết quả", f"Áp dụng ngưỡng Tiêu cực {NEGATIVE_THRESHOLD:.0%} và tín hiệu Lexicon nếu được chọn."),
+            ("output", "06", "Nhãn cuối", "Trả kết quả", "Nhãn, độ tin cậy và bằng chứng của lượt chạy."),
+        ])
         st.caption("Phân tích một review để xem token và trọng số thực tế ở từng bước.")
 
-st.caption("Demo nghiên cứu NLP · Nhãn học từ rating · Kết quả cần được đọc cùng ngữ cảnh, đặc biệt với review vừa khen vừa chê.")
+st.caption("NLP Sentiment Analysis · Kết quả nên được đọc cùng ngữ cảnh, đặc biệt với review vừa khen vừa chê.")

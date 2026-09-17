@@ -211,7 +211,7 @@ def test_model_status_fails_closed_when_model_is_missing(tmp_path):
 
     assert not status.ready
     assert status.model_path is None
-    assert "TV3" in status.message
+    assert "chưa sẵn sàng" in status.message
 
 
 def test_dashboard_services_do_not_eagerly_import_nlp_stack():

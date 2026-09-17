@@ -753,7 +753,64 @@ def apply_app_style() -> None:
           font-size: clamp(1.35rem, 1.8vw, 1.8rem);
         }
         .st-key-evaluation_metrics [data-testid="stMetricValue"] { font-size: 1.8rem; }
-        .st-key-pipeline_steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .st-key-pipeline_stages[data-testid="stHorizontalBlock"] {
+          align-items: flex-start;
+          gap: .75rem;
+        }
+        :is(.st-key-pipeline_stage_text, .st-key-pipeline_stage_inference,
+            .st-key-pipeline_stage_decision) {
+          position: relative;
+          min-width: min(100%, 260px);
+          height: auto;
+          padding: 1rem;
+          overflow: visible;
+          background: rgba(9, 14, 22, .66);
+          border-color: rgba(122, 167, 255, .15) !important;
+          box-shadow: none;
+        }
+        :is(.st-key-pipeline_stage_text, .st-key-pipeline_stage_inference,
+            .st-key-pipeline_stage_decision)::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 15px;
+          width: 46px;
+          height: 3px;
+          background: var(--stage-accent, var(--it-blue));
+        }
+        .st-key-pipeline_stage_text { --stage-accent: var(--it-orange); }
+        .st-key-pipeline_stage_inference { --stage-accent: var(--it-blue); }
+        .st-key-pipeline_stage_decision { --stage-accent: var(--it-mint); }
+        :is(.st-key-pipeline_stage_text, .st-key-pipeline_stage_inference,
+            .st-key-pipeline_stage_decision) h3 {
+          margin-block: -.1rem 0;
+          font-size: clamp(1.02rem, 1.2vw, 1.2rem);
+        }
+        :is(.st-key-pipeline_step_input, .st-key-pipeline_step_clean,
+            .st-key-pipeline_step_vector, .st-key-pipeline_step_model,
+            .st-key-pipeline_step_gate, .st-key-pipeline_step_output) {
+          flex: 0 0 auto;
+          height: auto;
+          margin-top: .5rem;
+          padding: .55rem .65rem;
+          border-left: 2px solid var(--stage-accent, var(--it-blue));
+          border-radius: 0 9px 9px 0;
+          background: rgba(122, 167, 255, .045);
+        }
+        :is(.st-key-pipeline_step_input, .st-key-pipeline_step_clean,
+            .st-key-pipeline_step_vector, .st-key-pipeline_step_model,
+            .st-key-pipeline_step_gate, .st-key-pipeline_step_output) [data-testid="stCaptionContainer"] p:first-child {
+          font-size: .8rem;
+          line-height: 1.6;
+          color: #8fa1b8;
+        }
+        :is(.st-key-pipeline_step_input, .st-key-pipeline_step_clean,
+            .st-key-pipeline_step_vector, .st-key-pipeline_step_model,
+            .st-key-pipeline_step_gate, .st-key-pipeline_step_output) [data-testid="stMarkdownContainer"] p {
+          color: #edf3fb;
+          font-size: 1rem;
+        }
+        .st-key-pipeline_trace_status { margin-block: -.15rem .15rem; }
         :is(.st-key-evaluation_chart_row, .st-key-language_charts) [data-testid="stColumn"] {
           min-width: min(100%, 320px);
         }
@@ -765,7 +822,6 @@ def apply_app_style() -> None:
           :is(.st-key-evaluation_chart_row, .st-key-language_charts) [data-testid="stColumn"] {
             flex: 1 1 380px;
           }
-          .st-key-pipeline_steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
           .st-key-evaluation_metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (max-width: 640px) {

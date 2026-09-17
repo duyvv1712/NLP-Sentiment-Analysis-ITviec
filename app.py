@@ -8,7 +8,7 @@ from src.app_theme import apply_app_style
 
 
 st.set_page_config(
-    page_title="ITviec Sentiment Lab",
+    page_title="ITviec Sentiment Intelligence",
     page_icon="assets/sentiment-lab-mark.svg",
     layout="wide",
     initial_sidebar_state="auto",
@@ -33,19 +33,18 @@ pages = {
             title="Insight doanh nghiệp",
             icon=":material/domain:",
         ),
-        st.Page(
-            "app_pages/benchmark.py",
-            title="Hiệu năng & Benchmark",
-            icon=":material/leaderboard:",
-        ),
     ],
-    "Phòng lab NLP": [
+    "Phân tích cảm xúc": [
         st.Page(
             "app_pages/predict.py",
             title="Phân tích review",
             icon=":material/chat:",
         ),
-        st.Page("app_pages/evaluation.py", title="Đánh giá mô hình", icon=":material/science:"),
+        st.Page(
+            "app_pages/benchmark.py",
+            title="Mô hình & đánh giá",
+            icon=":material/monitoring:",
+        ),
     ],
 }
 
@@ -62,7 +61,7 @@ with st.sidebar:
 
     model_status = get_model_status()
     with st.container(border=True, key="sidebar_status_card", gap="small"):
-        st.caption("WORKSPACE / IT REVIEWS")
+        st.caption("ITVIEC / SENTIMENT")
         st.markdown("**Dữ liệu phân tích**")
         stat_left, stat_right = st.columns(2, gap="small")
         stat_left.metric("Review", f"{review_count:,}" if review_count else "—")

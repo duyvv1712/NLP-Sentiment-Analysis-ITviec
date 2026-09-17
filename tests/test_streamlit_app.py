@@ -66,6 +66,10 @@ def test_prediction_page_handles_model_handoff_state():
     app.button[0].click().run()
 
     assert not app.exception
+    pipeline_text = [item.value for item in app.markdown]
+    assert any("Hiểu văn bản" in value for value in pipeline_text)
+    assert any("Biểu diễn & dự đoán" in value for value in pipeline_text)
+    assert any("Ra quyết định" in value for value in pipeline_text)
     if not get_model_status().ready:
         assert any("model chưa được bàn giao" in item.value for item in app.warning)
         assert app.code
@@ -85,12 +89,30 @@ def test_prediction_result_survives_rerun_but_clears_when_input_changes():
         assert "analysis_result" not in app.session_state
 
 
-def test_evaluation_page_loads_saved_evidence_without_model_inference():
-    app = AppTest.from_file(PROJECT_ROOT / "app.py", default_timeout=90).run()
-    app.switch_page("app_pages/evaluation.py").run()
+def test_unified_evaluation_view_loads_saved_evidence_without_model_inference():
+    app = AppTest.from_file(
+        PROJECT_ROOT / "app_pages" / "benchmark.py", default_timeout=90
+    ).run()
+    app.segmented_control(key="model_evaluation_view").set_value(
+        "Chất lượng mô hình"
+    ).run()
     assert not app.exception
-    assert any("Mô hình tốt đến đâu" in item.value for item in app.title)
+    assert any("Từ lựa chọn mô hình" in item.value for item in app.title)
     assert any(metric.label == "Macro F1" for metric in app.metric)
+
+
+def test_unified_error_analysis_view_renders_saved_review_errors():
+    app = AppTest.from_file(
+        PROJECT_ROOT / "app_pages" / "benchmark.py", default_timeout=90
+    ).run()
+    app.segmented_control(key="model_evaluation_view").set_value(
+        "Lỗi & ngưỡng"
+    ).run()
+
+    assert not app.exception
+    assert app.select_slider(key="evaluation_threshold").value == 0.30
+    assert app.selectbox(key="error_pair").value
+    assert app.selectbox(key="error_review").value is not None
 
 
 def test_company_insights_page_renders_real_dataset():
@@ -163,7 +185,16 @@ def test_benchmark_page_renders_leaderboard_and_metrics():
     ).run()
 
     assert not app.exception
-    assert any("Hiệu năng Mô hình" in title.value for title in app.title)
+    assert any("Từ lựa chọn mô hình" in title.value for title in app.title)
     assert len(app.metric) >= 4
     assert any("Stacking" in metric.value for metric in app.metric)
-    assert any("0.5507" in metric.value for metric in app.metric)
+    assert any("0.5475" in metric.value for metric in app.metric)
+    assert any("Bảng xếp hạng mô hình" in item.value for item in app.markdown)
+    assert len(app.dataframe) >= 1
+    leaderboard = app.dataframe[0].value
+    assert leaderboard["Hạng"].tolist() == [1, 2, 3, 4, 5]
+    assert leaderboard.iloc[0]["Mô hình"] == "Stacking Ensemble"
+
+    navigation_source = (PROJECT_ROOT / "app.py").read_text(encoding="utf-8")
+    assert 'title="Mô hình & đánh giá"' in navigation_source
+    assert 'st.Page("app_pages/evaluation.py"' not in navigation_source
