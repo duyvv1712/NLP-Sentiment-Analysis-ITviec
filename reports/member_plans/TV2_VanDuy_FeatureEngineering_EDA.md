@@ -68,4 +68,4 @@
   - Module code: [src/features.py](../../src/features.py) và các scripts thực nghiệm trong `scripts/`.
   - File ma trận đặc trưng: `models/train_test_features.joblib`, `models/hybrid_train_test_features.joblib`.
   - Toàn bộ hình ảnh biểu đồ EDA 300 DPI trong `reports/figures/`.
-  - **01 Cuốn Báo cáo Đồ án Toàn văn Hoàn chỉnh (File Word & File PDF)** 6 Chương: `reports/BAO_CAO_DO_AN_NLP_ITVIEC.docx` và `.pdf` (61 trang kể cả phần mở đầu, tài liệu tham khảo và phụ lục; riêng 6 chương nội dung là 47 trang).
+  - **01 Cuốn Báo cáo Đồ án Toàn văn Hoàn chỉnh (File Word & File PDF)** 6 Chương: `reports/BAO_CAO_DO_AN_NLP_ITVIEC.docx` và `.pdf` (59 trang kể cả phần mở đầu, tài liệu tham khảo và phụ lục; riêng 6 chương nội dung là 47 trang).

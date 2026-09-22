@@ -9,21 +9,21 @@ Không điền số ước lượng.
 """
 
 META = {
-    "school": "Trường Đại học",
-    "faculty": "Khoa Công nghệ Thông tin",
+    "school": "Trường Đại học Công nghệ Thông tin, ĐHQG-HCM",
+    "faculty": "Khoa Khoa học Máy tính",
     "course": "Môn học: Xử lý Ngôn ngữ Tự nhiên (Natural Language Processing)",
     "title": "Phân tích cảm xúc đánh giá nhân sự ngành Công nghệ thông tin trên nền tảng ITviec",
     "subtitle": "Xây dựng pipeline NLP tiếng Việt từ tiền xử lý, trích xuất đặc trưng, "
                 "mô hình hóa đến triển khai ứng dụng web",
-    "author": "Nhóm 4 thành viên",
+    "author": "Trần Hoàng Hôn, Vũ Văn Duy, Nguyễn Duy Khang, Phạm Thành Trung",
     "cover_info": [
         "Giảng viên hướng dẫn: Thầy Đặng Văn Thìn",
         "",
         "Nhóm thực hiện:",
-        "Hoàng Hôn — Trưởng nhóm, Business & Data Processing",
-        "Văn Duy — Feature Engineering, EDA & Biên soạn báo cáo",
-        "Duy Khang — Modeling & Hyperparameter Tuning",
-        "Phạm Thành Trung — Evaluation, Insights & Deployment",
+        "Trần Hoàng Hôn — 26410046 — Trưởng nhóm, Business & Data Processing",
+        "Vũ Văn Duy — 26410031 — Feature Engineering, EDA & Biên soạn báo cáo",
+        "Nguyễn Duy Khang — 26410055 — Modeling & Hyperparameter Tuning",
+        "Phạm Thành Trung — 26410141 — Evaluation, Insights & Deployment",
     ],
     "place_date": "Tháng 9 năm 2026",
 }
@@ -34,32 +34,6 @@ B = BLOCKS.append
 # ==========================================================================
 # PHẦN MỞ ĐẦU
 # ==========================================================================
-B(("h1", "LỜI CAM ĐOAN"))
-B(("p", "Nhóm tác giả xin cam đoan báo cáo này là kết quả nghiên cứu và thực nghiệm của "
-       "chính nhóm, được thực hiện dưới sự hướng dẫn của giảng viên phụ trách học phần. "
-       "Toàn bộ mã nguồn, notebook, artifact mô hình và tệp kết quả được lưu trữ công khai "
-       "trong kho mã nguồn của đồ án."))
-B(("p", "Mọi số liệu trình bày trong báo cáo đều được trích xuất trực tiếp từ các tệp kết quả "
-       "đã chạy thật trong kho mã nguồn, gồm `reports/aspect_hybrid_ablation.csv`, "
-       "`reports/tv2_vectorizer_comparison.csv`, `reports/tv2_balancing_comparison.csv`, "
-       "`reports/evaluation/negative_threshold_sensitivity.csv` và các tệp manifest artifact "
-       "trong thư mục `models/`. Nhóm không sử dụng số liệu ước lượng, không làm tròn có lợi "
-       "và không báo cáo kết quả chưa được thực thi."))
-B(("p", "Những nội dung tham khảo từ tài liệu bên ngoài đều được trích dẫn đầy đủ trong mục "
-       "Tài liệu tham khảo. Nhóm xin chịu hoàn toàn trách nhiệm về tính trung thực của báo cáo."))
-B(("pagebreak",))
-
-B(("h1", "LỜI CẢM ƠN"))
-B(("p", "Nhóm tác giả xin gửi lời cảm ơn chân thành đến giảng viên hướng dẫn đã đồng hành, "
-       "góp ý và định hướng phương pháp trong suốt quá trình thực hiện đồ án. Những nhận xét "
-       "về tính trung thực học thuật, đặc biệt là cảnh báo về rủi ro rò rỉ nhãn khi sử dụng "
-       "các trường điểm số có quan hệ trực tiếp với nhãn mục tiêu, đã định hình lại toàn bộ "
-       "thiết kế thí nghiệm của nhóm theo hướng chặt chẽ hơn."))
-B(("p", "Nhóm cũng cảm ơn cộng đồng mã nguồn mở Việt Nam, đặc biệt là các tác giả của thư viện "
-       "`underthesea` và bộ từ điển tiếng Việt mở, những tài nguyên đã giúp việc xử lý văn bản "
-       "tiếng Việt trong đồ án trở nên khả thi trong thời gian ba tuần."))
-B(("pagebreak",))
-
 B(("h1", "MỤC LỤC"))
 B(("toc",))
 B(("pagebreak",))
