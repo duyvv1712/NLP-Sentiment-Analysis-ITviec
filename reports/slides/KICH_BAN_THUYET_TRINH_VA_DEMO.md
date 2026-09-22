@@ -4,7 +4,7 @@
 
 - **Người 1 — Thuyết trình:** trình bày liên tục toàn bộ slide 1–15, sau đó bàn giao một lần cho người demo.
 - **Người 2 — Phạm Thành Trung:** phụ trách toàn bộ phần demo ứng dụng Streamlit và kết thúc buổi trình bày.
-- **Thời lượng mục tiêu:** khoảng **17 phút 05 giây**; có thể rút xuống 15 phút theo phương án ở cuối tài liệu.
+- **Thời lượng mục tiêu:** khoảng **18 phút 45 giây**; có thể rút xuống 15 phút theo phương án ở cuối tài liệu.
 
 Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng dụng hiện tại tại `http://localhost:8502`.
 
@@ -17,8 +17,8 @@ Nguồn nội dung: `reports/slides/NLP_ITviec_Sentiment_Slides.pptx` và ứng 
 | Slide 7–10: Mô hình và đánh giá | Người 1 | 4 phút 35 giây |
 | Slide 11–12: Insight và giới thiệu ứng dụng | Người 1 | 1 phút 20 giây |
 | Slide 13–15: Minh bạch, hạn chế và kết luận | Người 1 | 2 phút 05 giây |
-| Demo trực tiếp và kết thúc | Phạm Thành Trung | 3 phút 50 giây |
-| **Tổng** | **Cả hai** | **Khoảng 17 phút 05 giây** |
+| Demo trực tiếp và kết thúc | Phạm Thành Trung | 5 phút 30 giây |
+| **Tổng** | **Cả hai** | **Khoảng 18 phút 45 giây** |
 
 ## 3. Nội dung cần đồng bộ trên slide trước khi trình bày (Đã hoàn tất đồng bộ)
 
@@ -190,51 +190,95 @@ Các mục dưới đây đã được sửa trực tiếp trong `scripts/build_
 
 ## Demo 1 — Mở đầu và Insight doanh nghiệp
 
-**Thời gian:** 40 giây
+**Thời gian:** 1 phút
 
-**Thao tác:** Mở **Insight doanh nghiệp**, chuyển WordCloud giữa **Tích cực** và **Tiêu cực**, sau đó kéo xuống **Góc nhìn review**.
+**Thao tác:** Mở **Insight doanh nghiệp** và chỉ nhanh vào phần tổng hợp cảm xúc, xu hướng và từ khóa.
 
 > Em xin chào thầy và các bạn. Em là Phạm Thành Trung, đại diện nhóm trình bày phần demo.
 >
-> Trang này tổng hợp cảm xúc, xu hướng và từ khóa để người dùng nắm nhanh bức tranh của doanh nghiệp. WordCloud cho biết từ nào xuất hiện thường xuyên trong từng nhóm cảm xúc; còn Góc nhìn review giúp đối chiếu thống kê với nội dung và ngữ cảnh thật.
+> Đầu tiên, em vào trang Insight doanh nghiệp. Trang này tổng hợp cảm xúc, xu hướng và từ khóa để người dùng nhanh chóng nắm được bức tranh chung của doanh nghiệp.
+
+**Thao tác:** Chuyển WordCloud giữa **Tích cực** và **Tiêu cực**.
+
+> Đây là bản đồ từ khóa, cho thấy những từ xuất hiện thường xuyên trong review. Người dùng có thể chuyển giữa nhóm Tích cực và Tiêu cực để xem từ khóa đặc trưng của từng nhóm. Từ càng lớn nghĩa là xuất hiện càng nhiều, chứ chưa thể kết luận đó là nguyên nhân trực tiếp tạo ra cảm xúc.
+
+**Thao tác:** Kéo xuống **Góc nhìn review** và mở một review.
+
+> Phần Góc nhìn review giúp người dùng đối chiếu các thống kê bên trên với nội dung và ngữ cảnh thực tế của từng đánh giá.
 
 ## Demo 2 — Mô hình & đánh giá
 
-**Thời gian:** 55 giây
+**Thời gian:** 1 phút 30 giây
 
-**Thao tác:** Mở **Mô hình & đánh giá**, lần lượt xem **So sánh mô hình**, **Chất lượng mô hình** và **Lỗi & ngưỡng**.
+### So sánh mô hình
 
-> Stacking đạt CV Macro F1 cao nhất, khoảng 0,5619, nên được chọn đánh giá một lần trên Final Test.
+**Thao tác:** Mở **Mô hình & đánh giá** và giữ mục **So sánh mô hình**.
+
+> Ở mục So sánh mô hình, các mô hình được xếp hạng bằng 5-fold cross-validation trên tập train. Stacking đạt CV Macro F1 cao nhất, khoảng 0,5619, nên được chọn để đánh giá một lần trên Final Test.
 >
-> Ở ngưỡng 30%, hệ thống nhận đúng 40 trên 114 review Tiêu cực, tương đương Recall 35,1% và Precision 44,4%. Khi hạ xuống 10%, Recall tăng lên 77,2% nhưng Precision giảm còn 25,2%. Nghĩa là hệ thống bắt được nhiều review Tiêu cực hơn, đổi lại cảnh báo nhầm cũng nhiều hơn.
+> Bảng bên dưới cho thấy trên Final Test, Stacking có Macro F1 cao hơn và nhận diện ba lớp cân bằng hơn ViSoBERT zero-shot, đặc biệt ở lớp Trung tính.
+
+### Chất lượng mô hình
+
+**Thao tác:** Chuyển sang **Chất lượng mô hình**, giữ ngưỡng **30%** và chỉ vào ma trận nhầm lẫn.
+
+> Accuracy cho biết tỷ lệ dự đoán đúng trên toàn bộ review, còn Recall Tiêu cực cho biết hệ thống tìm đúng bao nhiêu review Tiêu cực.
 >
-> Phần phân tích lỗi cho thấy review vừa khen vừa chê dễ bị nhầm; rating dùng để tạo nhãn cũng chưa chắc phản ánh hết sắc thái của nội dung.
+> Với ngưỡng 30%, hệ thống nhận đúng 40 trong 114 review Tiêu cực, tương đương Recall 35,1%. Trong ma trận, 40 review được nhận đúng là Tiêu cực, 40 bị nhầm sang Trung tính và 34 bị nhầm sang Tích cực. Vì vậy, dù kết quả chung khá tốt, hệ thống vẫn còn bỏ sót nhiều review Tiêu cực.
+
+### Lỗi và ngưỡng
+
+**Thao tác:** Chuyển sang **Lỗi & ngưỡng**, kéo ngưỡng từ **30%** xuống **10%**, sau đó mở một review dự đoán sai.
+
+> Ở ngưỡng 30%, Recall Tiêu cực là 35,1% và Precision là 44,4%. Khi hạ xuống 10%, Recall tăng lên 77,2% nhưng Precision giảm còn 25,2%. Nghĩa là hệ thống bắt được nhiều review Tiêu cực hơn, đổi lại cảnh báo nhầm cũng nhiều hơn.
+>
+> Review lỗi này được gắn nhãn Tiêu cực theo rating nhưng model dự đoán Trung tính. Nội dung vừa khen môi trường và công nghệ, vừa chê OT nhiều và tăng lương chậm. Vì có cả khen lẫn chê nên model dễ nhầm; đồng thời rating cũng chưa nói hết sắc thái của nội dung review.
 
 ## Demo 3 — Phân tích review bằng mẫu thử
 
-**Thời gian:** 2 phút 15 giây
+**Thời gian:** 3 phút
 
-**Thao tác:** Mở **Phân tích review**, giữ **Text-only · 5.000 chiều** và chọn lần lượt các mẫu có sẵn.
+### Giới thiệu chức năng
+
+**Thao tác:** Mở **Phân tích review** và giữ **Text-only · 5.000 chiều**.
+
+> Đây là nơi người dùng nhập một review mới để hệ thống dự đoán cảm xúc. Text-only sử dụng đặc trưng từ nội dung; còn Text + Lexicon ghép thêm năm tín hiệu từ điển cảm xúc vào vector model.
+>
+> Trong phần demo, em giữ Text-only để thống nhất với phần đánh giá. Các tín hiệu Lexicon và phạm vi phủ định vẫn được kiểm tra tại Decision Gate trước khi trả nhãn cuối.
 
 ### Mẫu Lời khen
 
-> Với mẫu Lời khen, hệ thống nhận diện là Tích cực, khoảng 77,5%. Ba thanh bên dưới là xác suất ban đầu của model và Tích cực đang cao nhất.
+**Thao tác:** Chọn mẫu **Lời khen** và bấm **Phân tích cảm xúc**.
+
+> Đầu tiên, em thử mẫu Lời khen. Hệ thống nhận diện review này là Tích cực. Ba thanh bên dưới cho biết xác suất model dự đoán cho từng lớp; thanh Tích cực cao nhất, khoảng 77,5%, nên được chọn làm kết quả.
 
 **Thao tác:** Kéo xuống phần pipeline, token và TF-IDF.
 
-> Review được làm sạch và tách từ tiếng Việt; những tiếng cùng một từ được nối bằng dấu gạch dưới. TF-IDF chuyển văn bản thành vector, Stacking kết hợp Naive Bayes, Logistic Regression và Linear SVM, sau đó Decision Gate kiểm tra ngưỡng cùng tín hiệu phủ định trước khi trả nhãn cuối. Hệ thống chỉ suy luận bằng model đã huấn luyện, không train lại trên review vừa nhập.
+> Với chính lời khen này, hệ thống nhận nội dung, làm sạch và tách từ tiếng Việt. TF-IDF chuyển các từ thành số để ba model trong Stacking đưa ra dự đoán. Sau đó, Decision Gate kiểm tra thêm ngưỡng và tín hiệu ngôn ngữ rồi trả về nhãn Tích cực cùng các thanh xác suất vừa thấy.
 >
-> Biểu đồ TF-IDF cho biết những từ có trọng số đầu vào nổi bật, nhưng không có nghĩa một từ riêng lẻ quyết định toàn bộ kết quả.
-
-### Ba mẫu còn lại
-
-**Thao tác:** Chuyển nhanh qua **Ý kiến hỗn hợp**, **Lời phàn nàn** và **Cần lưu ý**.
-
-> Mẫu Ý kiến hỗn hợp vừa khen công việc ổn vừa chê quy trình chậm, nên model nghiêng về Trung tính khoảng 60,7%.
+> Đây là review sau khi làm sạch và tách từ. Những tiếng thuộc cùng một từ được nối bằng dấu gạch dưới, ví dụ như “môi_trường”. Văn bản này được transform bằng bộ TF-IDF đã fit trên tập train; hệ thống không train lại trên review vừa nhập.
 >
-> Mẫu Lời phàn nàn có nhiều ý chê cùng hướng nên được nhận diện là Tiêu cực khoảng 91,1%.
+> Biểu đồ cho thấy những từ nổi bật trong review theo TF-IDF. Cột cao hơn nghĩa là từ có trọng số đầu vào lớn hơn, nhưng không có nghĩa chỉ riêng từ đó quyết định kết quả.
+
+### Mẫu Ý kiến hỗn hợp
+
+**Thao tác:** Chọn **Ý kiến hỗn hợp** và phân tích.
+
+> Tiếp theo, em thử mẫu Ý kiến hỗn hợp, có cả điểm ổn và điểm chưa tốt. Review vừa khen “công việc ổn”, vừa chê “quy trình chậm”, nên model nghiêng về Trung tính khoảng 60,7%. Nhóm Tích cực vẫn có khoảng 29,1% vì nội dung không hoàn toàn là lời chê.
+
+### Mẫu Lời phàn nàn
+
+**Thao tác:** Chọn **Lời phàn nàn** và phân tích.
+
+> Mẫu này có sắc thái rõ ràng hơn, với nhiều lời chê như “rất tệ”, “quản lý yếu” và “lương thấp”. Các ý đều nghiêng về một hướng nên hệ thống nhận diện là Tiêu cực, khoảng 91,1%.
+
+### Mẫu Cần lưu ý và phạm vi phủ định
+
+**Thao tác:** Chọn **Cần lưu ý**, phân tích rồi mở phần **Quy tắc & giới hạn**.
+
+> Cuối cùng, em thử mẫu Cần lưu ý. Ba nhóm có xác suất khá gần nhau: Tiêu cực 35,4%, Trung tính 34,4% và Tích cực 30,2%. Hệ thống chọn Tiêu cực vì nhỉnh hơn hai nhóm còn lại; ngưỡng 30% không làm đổi nhãn trong ví dụ này. Vì vậy, người dùng vẫn cần đọc nội dung review để hiểu kết quả.
 >
-> Với mẫu Cần lưu ý, ba xác suất khá gần nhau: Tiêu cực 35,4%, Trung tính 34,4% và Tích cực 30,2%. Hệ thống chọn Tiêu cực vì nhỉnh hơn, nhưng người dùng vẫn cần đọc nội dung. Decision Gate còn xét các cụm như “thiếu minh bạch” hoặc “chưa tương xứng” để nhận biết phạm vi phủ định.
+> Stacking đưa ra dự đoán trước, sau đó Decision Gate kiểm tra thêm ngưỡng và cách dùng từ. Ví dụ, “minh bạch” là ý tốt nhưng “thiếu minh bạch” lại là lời chê; “lương tương xứng” cũng khác với “lương chưa tương xứng”. Hệ thống xét cả cụm từ như vậy để xử lý phạm vi phủ định. Trong review này, Stacking đã nghiêng về Tiêu cực nên nhãn cuối không thay đổi.
 
 ## Kết thúc demo và buổi trình bày
 
