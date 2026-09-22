@@ -18,7 +18,7 @@ from src.app_theme import page_header, style_chart
 
 page_header(
     "TỔNG QUAN",
-    "Hiểu tiếng nói nhân sự qua từng review",
+    "Khám phá góc nhìn nhân sự qua từng review",
     "Khám phá cảm xúc từ review ngành công nghệ. Từ bức tranh tổng thể "
     "đến câu chuyện của từng doanh nghiệp.",
 )

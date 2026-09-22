@@ -73,12 +73,15 @@ def apply_app_style() -> None:
           padding-top: .65rem;
         }
         [data-testid="stSidebarHeader"] {
-          min-height: 72px;
+          min-height: 82px;
           padding-inline: 1.2rem;
           border-bottom: 1px solid rgba(255, 255, 255, .055);
         }
         [data-testid="stSidebarLogo"] {
-          max-height: 34px;
+          height: 42px !important;
+          max-height: 42px !important;
+          width: auto;
+          max-width: 100%;
         }
         [data-testid="stSidebarNav"] {
           padding: .8rem 1rem .4rem;
@@ -716,6 +719,15 @@ def apply_app_style() -> None:
             .st-key-evaluation_sensitivity, .st-key-evaluation_errors) h3 {
           font-size: clamp(1.1rem, 1.5vw, 1.35rem);
           line-height: 1.4;
+        }
+        .st-key-prediction_result h3 {
+          font-size: clamp(1.5rem, 1.9vw, 1.75rem);
+          line-height: 1.3;
+        }
+        .st-key-prediction_result h3 .stMarkdownBadge {
+          font-size: 1.1rem !important;
+          font-weight: 700;
+          padding: .35rem .7rem;
         }
         .st-key-review_editor [data-testid="stButtonGroup"] [role="radiogroup"] {
           flex-wrap: wrap;

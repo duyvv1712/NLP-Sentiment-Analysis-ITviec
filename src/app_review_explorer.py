@@ -120,7 +120,7 @@ def _review_explorer(catalog: pd.DataFrame, scope: str) -> None:
     with st.container(key="review_explorer", gap="small"):
         with st.container(key="review_explorer_heading", gap="xsmall"):
             st.caption("TỪ DỮ LIỆU ĐẾN CÂU CHUYỆN")
-            st.subheader("Tiếng nói từ review")
+            st.subheader("Góc nhìn review")
             st.write("Đọc phản hồi nguyên văn, từ điều được yêu thích đến những điều có thể tốt hơn.")
 
         with st.container(border=True, key="review_toolbar", gap="small"):

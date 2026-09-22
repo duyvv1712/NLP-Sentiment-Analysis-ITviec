@@ -67,7 +67,7 @@ def test_prediction_page_handles_model_handoff_state():
 
     assert not app.exception
     pipeline_text = [item.value for item in app.markdown]
-    assert any("Hiểu văn bản" in value for value in pipeline_text)
+    assert any("Tiền xử lý văn bản" in value for value in pipeline_text)
     assert any("Biểu diễn & dự đoán" in value for value in pipeline_text)
     assert any("Ra quyết định" in value for value in pipeline_text)
     if not get_model_status().ready:
@@ -111,6 +111,13 @@ def test_unified_error_analysis_view_renders_saved_review_errors():
 
     assert not app.exception
     assert app.select_slider(key="evaluation_threshold").value == 0.30
+    metric_values = {metric.label: metric.value for metric in app.metric}
+    assert metric_values["Ngưỡng đang xem"] == "30%"
+    assert metric_values["Recall Tiêu cực"] == "35.1%"
+    app.select_slider(key="evaluation_threshold").set_value(0.10).run()
+    metric_values = {metric.label: metric.value for metric in app.metric}
+    assert metric_values["Ngưỡng đang xem"] == "10%"
+    assert metric_values["Recall Tiêu cực"] == "77.2%"
     assert app.selectbox(key="error_pair").value
     assert app.selectbox(key="error_review").value is not None
 
@@ -121,7 +128,7 @@ def test_company_insights_page_renders_real_dataset():
     ).run()
 
     assert not app.exception
-    assert any("Insight cảm xúc" in title.value for title in app.title)
+    assert any(title.value == "Insight doanh nghiệp" for title in app.title)
     assert app.metric
     metric_labels = {metric.label for metric in app.metric}
     assert {
@@ -133,7 +140,7 @@ def test_company_insights_page_renders_real_dataset():
         "Từ xuất hiện nhiều hơn" in caption.value
         for caption in app.caption
     )
-    assert any(title.value == "Tiếng nói từ review" for title in app.subheader)
+    assert any(title.value == "Góc nhìn review" for title in app.subheader)
     assert not any(expander.label == "Khám phá review chi tiết" for expander in app.expander)
     assert len(app.radio(key="review_selection").options) == 8
     assert app.text_input(key="review_query").value == ""
@@ -185,7 +192,7 @@ def test_benchmark_page_renders_leaderboard_and_metrics():
     ).run()
 
     assert not app.exception
-    assert any("Từ lựa chọn mô hình" in title.value for title in app.title)
+    assert any(title.value == "Hiệu năng và chất lượng mô hình" for title in app.title)
     assert len(app.metric) >= 4
     assert any("Stacking" in metric.value for metric in app.metric)
     assert any("0.5475" in metric.value for metric in app.metric)

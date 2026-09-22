@@ -119,7 +119,7 @@ def classification_report(matrix: np.ndarray, labels: list[str]) -> pd.DataFrame
 
 page_header(
     "MÔ HÌNH & ĐÁNH GIÁ",
-    "Từ lựa chọn mô hình đến phân tích lỗi",
+    "Hiệu năng và chất lượng mô hình",
     "So sánh công bằng, kiểm tra chất lượng theo từng lớp và quan sát tác động của ngưỡng Tiêu cực.",
 )
 
@@ -252,7 +252,7 @@ if view == "So sánh mô hình":
     )
 
     st.caption("02 / ĐÓNG GÓP CỦA LEXICON")
-    st.subheader("Năm đặc trưng cảm xúc cải thiện nhẹ lớp khó")
+    st.subheader("Lexicon hỗ trợ nhận diện lớp Tiêu cực")
     ablation_display = ablation.rename(
         columns={
             "feature_group": "Nhóm đặc trưng",
@@ -278,7 +278,7 @@ if view == "So sánh mô hình":
     )
 
     st.caption("03 / ML TRUYỀN THỐNG VÀ TRANSFORMER")
-    st.subheader("Model đúng miền vượt ViSoBERT chưa fine-tune")
+    st.subheader("So sánh Stacking với ViSoBERT zero-shot")
     generalization_display = FINAL_TEST_COMPARISON.rename(
         columns={
             "model": "Mô hình",
@@ -311,7 +311,7 @@ if view == "So sánh mô hình":
 
 elif view == "Chất lượng mô hình":
     st.caption("01 / KẾT QUẢ TRÊN FINAL TEST")
-    st.subheader("Hiệu năng phải được đọc cùng lớp Tiêu cực")
+    st.subheader("Đánh giá hiệu năng tổng thể và lớp Tiêu cực")
 
     with st.container(horizontal=True, key="quality_metrics", gap="small"):
         for title, column, fmt in [
@@ -466,6 +466,19 @@ else:
         selected = sensitivity.loc[
             np.isclose(sensitivity["Threshold"], selected_threshold)
         ].iloc[0]
+        with st.container(horizontal=True, key="selected_threshold_metrics", gap="small"):
+            st.metric("Ngưỡng đang xem", f"{selected_threshold:.0%}", border=True)
+            st.metric(
+                "Recall Tiêu cực",
+                f"{selected['Negative Recall']:.1%}",
+                border=True,
+            )
+            st.metric(
+                "Precision Tiêu cực",
+                f"{selected['Negative Precision']:.1%}",
+                border=True,
+            )
+            st.metric("Macro F1", f"{selected['Macro F1']:.4f}", border=True)
         chart_data = sensitivity.rename(
             columns={
                 "Negative Recall": "Recall Tiêu cực",
@@ -527,7 +540,7 @@ else:
 
     with st.container(border=True, key="evaluation_errors"):
         st.caption("03 / ERROR ANALYSIS")
-        st.subheader("Đọc một lỗi thật để hiểu giới hạn")
+        st.subheader("Phân tích lỗi dự đoán thực tế")
         pairs = errors["Cặp nhầm"].unique().tolist()
         pair = st.selectbox(
             "Kiểu nhầm lẫn",
