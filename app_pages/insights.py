@@ -50,7 +50,7 @@ def make_wordcloud(text: str, sentiment: str) -> bytes:
     return buffer.getvalue()
 
 
-page_header("DOANH NGHIỆP", "Insight cảm xúc doanh nghiệp",
+page_header("DOANH NGHIỆP", "Insight doanh nghiệp",
     "Khám phá xu hướng, từ khóa và review thật. Bộ lọc ngưỡng mẫu giúp tránh "
     "so sánh doanh nghiệp có quá ít dữ liệu."
 )
