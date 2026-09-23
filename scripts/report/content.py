@@ -9,23 +9,27 @@ Không điền số ước lượng.
 """
 
 META = {
-    "school": "Trường Đại học Công nghệ Thông tin, ĐHQG-HCM",
+    "org": "Đại học Quốc gia Thành phố Hồ Chí Minh",
+    "school": "Trường Đại học Công nghệ Thông tin",
     "faculty": "Khoa Khoa học Máy tính",
-    "course": "Môn học: Xử lý Ngôn ngữ Tự nhiên (Natural Language Processing)",
-    "title": "Phân tích cảm xúc đánh giá nhân sự ngành Công nghệ thông tin trên nền tảng ITviec",
-    "subtitle": "Xây dựng pipeline NLP tiếng Việt từ tiền xử lý, trích xuất đặc trưng, "
-                "mô hình hóa đến triển khai ứng dụng web",
-    "author": "Trần Hoàng Hôn, Vũ Văn Duy, Nguyễn Duy Khang, Phạm Thành Trung",
-    "cover_info": [
-        "Giảng viên hướng dẫn: Thầy Đặng Văn Thìn",
-        "",
-        "Nhóm thực hiện:",
-        "Trần Hoàng Hôn — 26410046 — Trưởng nhóm, Business & Data Processing",
-        "Vũ Văn Duy — 26410031 — Feature Engineering, EDA & Biên soạn báo cáo",
-        "Nguyễn Duy Khang — 26410055 — Modeling & Hyperparameter Tuning",
-        "Phạm Thành Trung — 26410141 — Evaluation, Insights & Deployment",
+    "logo": "assets/uit-logo.png",
+    "doc_kind": "Báo cáo đồ án môn học",
+    "course": "Môn học: Xử lý ngôn ngữ tự nhiên",
+    "topic_label": "Đề tài:",
+    "title": "Phân tích cảm xúc đánh giá nhân sự ngành Công nghệ thông tin "
+             "trên nền tảng ITviec",
+    "advisor_label": "Giảng viên hướng dẫn:",
+    "advisor": "Thầy Đặng Văn Thìn",
+    "team_label": "Nhóm sinh viên thực hiện:",
+    "team_name": "Nhóm 9",
+    "members": [
+        ("1. Trần Hoàng Hôn - 26410046 (Trưởng nhóm)", True),
+        ("2. Nguyễn Duy Khang - 26410055", False),
+        ("3. Vũ Văn Duy - 26410031", False),
+        ("4. Phạm Thành Trung - 26410141", False),
     ],
-    "place_date": "Tháng 9 năm 2026",
+    "author": "Trần Hoàng Hôn, Nguyễn Duy Khang, Vũ Văn Duy, Phạm Thành Trung",
+    "place_date": "TP. Hồ Chí Minh - Tháng 09/2026",
 }
 
 BLOCKS = []
@@ -310,17 +314,20 @@ B(("p", "Cần nhấn mạnh rằng đây **không phải nhãn vàng**. Ngườ
 B(("h3", "2.1.3. Giá trị khuyết thiếu và audit trùng lặp"))
 B(("p", "Dữ liệu khuyết thiếu chỉ xuất hiện ở hai trường nội dung và ở mức không đáng kể. "
        "Các cột đã tiền xử lý và cột nhãn không có giá trị khuyết thiếu. Đáng chú ý hơn là "
-       "kết quả audit văn bản trùng: tồn tại 6 dòng thuộc ba nhóm có `clean_advance_text` "
-       "giống hệt nhau, trong đó **một nhóm có cùng nội dung văn bản nhưng khác nhãn yếu**."))
+       "kết quả audit văn bản trùng: tồn tại 6 dòng thuộc ba nhóm (mỗi nhóm 2 dòng) có "
+       "`clean_advance_text` giống hệt nhau, trong đó **một nhóm có cùng nội dung văn bản nhưng khác nhãn yếu** (một dòng Neutral, một dòng Positive)."))
 B(("table", "Bảng 2.3. Thống kê giá trị khuyết thiếu và kết quả audit trùng lặp",
    ["Hạng mục", "Số dòng", "Tỷ lệ", "Xử lý"],
    [
        ["Khuyết `What I liked`", "1", "0,01%", "Giữ lại, phần nội dung còn lại vẫn đủ"],
        ["Khuyết `Suggestions for improvement`", "5", "0,06%", "Giữ lại"],
        ["Khuyết cột đã xử lý và cột nhãn", "0", "0,00%", "Không cần xử lý"],
-       ["Trùng văn bản, cùng nhãn", "3 dòng dư", "0,04%", "Giữ lại một dòng đại diện"],
-       ["Trùng văn bản, **khác nhãn**", "1 nhóm", "—", "**Loại toàn bộ nhóm**"],
-       ["Tổng dòng đưa vào mô hình", "**8.413**", "99,95%", "Từ 8.417 dòng nguồn"],
+       ["Trùng văn bản, cùng nhãn (2 nhóm × 2 dòng)", "2 dòng dư", "0,02%",
+        "Giữ lại một dòng đại diện mỗi nhóm"],
+       ["Trùng văn bản, **khác nhãn** (1 nhóm × 2 dòng)", "2 dòng", "0,02%",
+        "**Loại toàn bộ nhóm**"],
+       ["Tổng số dòng bị loại", "**4**", "0,05%", "8.417 − 4 = 8.413"],
+       ["Tổng dòng đưa vào mô hình", "**8.413**", "99,95%", "Khớp `models/artifact_manifest.json`"],
    ],
    ["l", "r", "r", "l"]))
 B(("p", "Việc loại toàn bộ nhóm bất đồng nhãn, thay vì giữ lại một dòng bất kỳ, là quyết "

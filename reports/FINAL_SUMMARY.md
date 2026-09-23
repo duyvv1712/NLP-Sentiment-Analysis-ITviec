@@ -111,7 +111,7 @@ flowchart TD
 
 ### 2. Phân chia tập dữ liệu & Thí nghiệm đối chứng đặc trưng (Ablation Study)
 - **Quy trình phân chia chuẩn mực**:
-  - Dữ liệu loại bỏ **4 dòng** sau bước audit trùng lặp (3 dòng trùng văn bản cùng nhãn giữ lại 1 đại diện, 1 nhóm trùng văn bản khác nhãn bị loại toàn bộ): 8.417 → **8.413 mẫu** đưa vào mô hình.
+  - Dữ liệu loại bỏ **4 dòng** sau bước audit trùng lặp (6 dòng nằm trong 3 nhóm trùng, mỗi nhóm 2 dòng: 2 nhóm cùng nhãn giữ lại 1 đại diện → loại 2 dòng; 1 nhóm khác nhãn bị loại toàn bộ → loại 2 dòng): 8.417 → **8.413 mẫu** đưa vào mô hình.
   - **Tập Development (80% = 6.730 mẫu)**: Dùng để trích xuất từ vựng, chạy 5-Fold Stratified Cross-Validation tinh chỉnh siêu tham số.
   - **Tập Final Test (20% = 1.683 mẫu)**: Hoàn toàn được khóa kín (blind hold-out), chỉ dùng để đánh giá kiểm chứng đúng 1 lần duy nhất cho mô hình đã hoàn thiện.
 

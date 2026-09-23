@@ -62,6 +62,7 @@ def strip_inline(text: str) -> str:
 FIG_MAX_W = TEXT_W * 0.86
 FIG_MAX_H = 0.33 * (PAGE_H - M_TOP - M_BOTTOM)
 TARGET_DPI = 300
+LOGO_W = 3.6 * CM  # bề rộng logo trên trang bìa
 
 _CACHE_DIR = Path(tempfile.gettempdir()) / "nlp_report_figs"
 
@@ -224,8 +225,25 @@ def build_docx(blocks, out_path: Path, meta: dict):
         run.font.name = "Times New Roman"
         run.font.size = Pt(12)
 
+    # ---- viền trang, chỉ áp cho trang bìa ----
+    pg_borders = OxmlElement("w:pgBorders")
+    pg_borders.set(qn("w:offsetFrom"), "page")
+    pg_borders.set(qn("w:display"), "firstPage")
+    for side in ("top", "left", "bottom", "right"):
+        edge = OxmlElement(f"w:{side}")
+        edge.set(qn("w:val"), "triple")
+        edge.set(qn("w:sz"), "18")
+        edge.set(qn("w:space"), "24")
+        edge.set(qn("w:color"), "000000")
+        pg_borders.append(edge)
+    # Thứ tự phần tử con của w:sectPr do schema quy định: pgBorders phải đứng
+    # ngay sau pgMar, không được append vào cuối.
+    sec._sectPr.find(qn("w:pgMar")).addnext(pg_borders)
+    sec.different_first_page_header_footer = True  # trang bìa không đánh số
+
     # ---- trang bìa ----
-    def cover_line(text, size, bold=False, space_after=6, caps=False):
+    def cover_line(text, size, bold=False, space_after=6, caps=False,
+                   align=WD_ALIGN_PARAGRAPH.CENTER):
         par = doc.add_paragraph()
         run = par.add_run(text.upper() if caps else text)
         run.font.name = "Times New Roman"
@@ -233,19 +251,39 @@ def build_docx(blocks, out_path: Path, meta: dict):
         run.bold = bold
         par.paragraph_format.first_line_indent = Cm(0)
         par.paragraph_format.space_after = Pt(space_after)
-        par.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        par.paragraph_format.space_before = Pt(0)
+        par.paragraph_format.line_spacing = 1.15
+        par.paragraph_format.alignment = align
         return par
 
+    LEFT = WD_ALIGN_PARAGRAPH.LEFT
+
+    cover_line(meta["org"], 13, True, 2, caps=True)
     cover_line(meta["school"], 13, True, 2, caps=True)
-    cover_line(meta["faculty"], 13, True, 40, caps=True)
-    cover_line("BÁO CÁO ĐỒ ÁN MÔN HỌC", 14, True, 6, caps=True)
-    cover_line(meta["course"], 13, False, 44)
-    cover_line(meta["title"], 18, True, 10, caps=True)
-    cover_line(meta["subtitle"], 13, False, 48, caps=False)
-    for line in meta["cover_info"]:
-        cover_line(line, 13, False, 6)
-    cover_line("", 13, False, 40)
-    cover_line(meta["place_date"], 13, False, 0)
+    cover_line(meta["faculty"], 13, True, 2, caps=True)
+    cover_line("-o0o-", 13, True, 10)
+
+    logo_par = doc.add_paragraph()
+    logo_par.paragraph_format.first_line_indent = Cm(0)
+    logo_par.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    logo_par.paragraph_format.space_after = Pt(14)
+    logo_w, _ = fig_size(PROJECT_ROOT / meta["logo"], LOGO_W, LOGO_W)
+    logo_par.add_run().add_picture(str(PROJECT_ROOT / meta["logo"]), width=Pt(logo_w))
+
+    cover_line(meta["doc_kind"], 20, True, 6, caps=True)
+    cover_line(meta["course"], 15, True, 16, caps=True)
+    cover_line(meta["topic_label"], 14, True, 4, caps=True)
+    cover_line(f'"{meta["title"].upper()}"', 15, True, 22)
+
+    cover_line(meta["advisor_label"], 13, True, 2, caps=True, align=LEFT)
+    cover_line(meta["advisor"], 13, True, 12, align=LEFT)
+    cover_line(meta["team_label"], 13, True, 2, caps=True, align=LEFT)
+    cover_line(meta["team_name"], 13, True, 2, align=LEFT)
+    for text, bold in meta["members"]:
+        cover_line(text, 13, bold, 2, align=LEFT)
+
+    cover_line("", 13, False, 20)
+    cover_line(meta["place_date"], 14, True, 0, caps=True)
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 
     # ---- nội dung ----
@@ -434,26 +472,40 @@ def build_pdf(blocks, out_path: Path, meta: dict):
         return "".join(parts)
 
     story = []
-    heading_seq = []  # (level, text) theo thứ tự, để notify TOC
 
     # --- trang bìa ---
-    def cov(text, size, bold=False, gap=6, caps=False):
-        st = ParagraphStyle(f"cov{size}{bold}", parent=cover, fontSize=size,
-                            leading=size * 1.35,
+    def cov(text, size, bold=False, gap=6, caps=False, align=TA_CENTER):
+        st = ParagraphStyle(f"cov{size}{bold}{align}", parent=cover, fontSize=size,
+                            leading=size * 1.3, alignment=align,
                             fontName="TNR-Bold" if bold else "TNR")
         story.append(Paragraph(rich(text.upper() if caps else text), st))
-        story.append(Spacer(1, gap))
+        if gap:
+            story.append(Spacer(1, gap))
 
+    cov(meta["org"], 13, True, 2, caps=True)
     cov(meta["school"], 13, True, 2, caps=True)
-    cov(meta["faculty"], 13, True, 40, caps=True)
-    cov("Báo cáo đồ án môn học", 14, True, 6, caps=True)
-    cov(meta["course"], 13, False, 44)
-    cov(meta["title"], 18, True, 10, caps=True)
-    cov(meta["subtitle"], 13, False, 48)
-    for line in meta["cover_info"]:
-        cov(line, 13, False, 6)
-    story.append(Spacer(1, 40))
-    cov(meta["place_date"], 13, False, 0)
+    cov(meta["faculty"], 13, True, 2, caps=True)
+    cov("-o0o-", 13, True, 12)
+
+    logo_path = PROJECT_ROOT / meta["logo"]
+    lw, lh = fig_size(logo_path, LOGO_W, LOGO_W)
+    story.append(Image(str(logo_path), width=lw, height=lh, hAlign="CENTER"))
+    story.append(Spacer(1, 18))
+
+    cov(meta["doc_kind"], 20, True, 8, caps=True)
+    cov(meta["course"], 15, True, 20, caps=True)
+    cov(meta["topic_label"], 14, True, 6, caps=True)
+    cov(f'"{meta["title"].upper()}"', 15, True, 28)
+
+    cov(meta["advisor_label"], 13, True, 3, caps=True, align=TA_LEFT)
+    cov(meta["advisor"], 13, True, 16, align=TA_LEFT)
+    cov(meta["team_label"], 13, True, 3, caps=True, align=TA_LEFT)
+    cov(meta["team_name"], 13, True, 3, align=TA_LEFT)
+    for text, bold in meta["members"]:
+        cov(text, 13, bold, 3, align=TA_LEFT)
+
+    story.append(Spacer(1, 30))
+    cov(meta["place_date"], 14, True, 0, caps=True)
     story.append(PageBreak())
 
     toc = TableOfContents()
@@ -583,7 +635,12 @@ def build_pdf(blocks, out_path: Path, meta: dict):
 
     def on_page(canv, doc_):
         canv.saveState()
-        if doc_.page > 1:
+        if doc_.page == 1:
+            # khung viền ba nét của trang bìa
+            for inset, width in ((0.95 * CM, 3.2), (1.22 * CM, 1.0), (1.42 * CM, 1.8)):
+                canv.setLineWidth(width)
+                canv.rect(inset, inset, PAGE_W - 2 * inset, PAGE_H - 2 * inset)
+        else:
             canv.setFont("TNR", 12)
             canv.drawCentredString(PAGE_W / 2, M_BOTTOM - 0.85 * CM, str(doc_.page))
         canv.restoreState()
